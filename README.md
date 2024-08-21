@@ -18,6 +18,15 @@
 These capabilities enable you to quickly and efficiently access and execute custom workflows and automations, significantly enhancing your productivity.
 
 
+
+## Snapshots
+
+<div style="display: flex; gap: 50px"> 
+    <img style="width:300px" src="./images/snapshot_1.jpg" />
+    <img style="width:300px" src="./images/snapshot_2.jpg" >
+    <img style="width:300px" src="./images/status_bar.jpg" >
+</div>
+
 ## Sponsor
 
 If you find this project helpful, please consider supporting it with a donation. Your generosity is greatly appreciated! 🙏
