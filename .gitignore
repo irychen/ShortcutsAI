@@ -1,0 +1,11 @@
+
+# system files
+.DS_Store
+Thumbs.db
+
+# userdata
+xcuserdata/
+
+# IDE
+.idea
+.vscode
