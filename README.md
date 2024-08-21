@@ -17,7 +17,9 @@
 
 These capabilities enable you to quickly and efficiently access and execute custom workflows and automations, significantly enhancing your productivity.
 
+## Requirement
 
+Macos 13.0+
 
 ## Snapshots
 
