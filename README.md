@@ -3,10 +3,14 @@
 </p>
 
 <div align="center">
-  <h1 align="center">
+  <h1 align="center" >
     Shortcuts AI
   </h1>
 </div>
+
+<p align="center">
+  Just run your AI work from macOs Status Bar
+</p>
 
 ## Description
 
