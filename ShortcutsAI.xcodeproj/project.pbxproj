@@ -7,204 +7,238 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		32AA08752C762D4000A1A974 /* LoginItemsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AA08742C762D4000A1A974 /* LoginItemsService.swift */; };
-		32AA08772C762D7B00A1A974 /* LogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AA08762C762D7B00A1A974 /* LogView.swift */; };
-		32ACC49F2C736BB600CFE9C9 /* ImageUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ACC49E2C736BB600CFE9C9 /* ImageUtil.swift */; };
-		32ACC4A12C736D7900CFE9C9 /* OCRYoudaoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ACC4A02C736D7900CFE9C9 /* OCRYoudaoService.swift */; };
-		32ACC4A32C737B4C00CFE9C9 /* ExcuteFlowService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ACC4A22C737B4C00CFE9C9 /* ExcuteFlowService.swift */; };
-		C800CF9F2C72F2230091ECD0 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = C800CF9E2C72F2230091ECD0 /* App.swift */; };
-		C800CFA12C72F2230091ECD0 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C800CFA02C72F2230091ECD0 /* MainView.swift */; };
-		C800CFA32C72F2250091ECD0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C800CFA22C72F2250091ECD0 /* Assets.xcassets */; };
-		C800CFA62C72F2250091ECD0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C800CFA52C72F2250091ECD0 /* Preview Assets.xcassets */; };
-		C800CFA82C72F2250091ECD0 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = C800CFA72C72F2250091ECD0 /* Persistence.swift */; };
-		C800CFAB2C72F2250091ECD0 /* ShortcutsAI.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C800CFA92C72F2250091ECD0 /* ShortcutsAI.xcdatamodeld */; };
-		C800CFB82C72F3F00091ECD0 /* FlowService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C800CFB72C72F3F00091ECD0 /* FlowService.swift */; };
-		C800CFBA2C72F41E0091ECD0 /* OpenAIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C800CFB92C72F41E0091ECD0 /* OpenAIService.swift */; };
-		C800CFBC2C72F4350091ECD0 /* ScreenshotService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C800CFBB2C72F4350091ECD0 /* ScreenshotService.swift */; };
-		C800CFBE2C72F4540091ECD0 /* ClipboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C800CFBD2C72F4540091ECD0 /* ClipboardService.swift */; };
-		C800CFC02C730BF60091ECD0 /* LogService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C800CFBF2C730BF60091ECD0 /* LogService.swift */; };
-		C800CFC22C731D0E0091ECD0 /* AppConfigService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C800CFC12C731D0E0091ECD0 /* AppConfigService.swift */; };
-		C86E087E2C73377B00432475 /* IndexView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C86E087D2C73377B00432475 /* IndexView.swift */; };
-		C86E08802C73378A00432475 /* FlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C86E087F2C73378A00432475 /* FlowView.swift */; };
-		C86E08822C7337A500432475 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C86E08812C7337A500432475 /* SettingsView.swift */; };
-		C86E08842C73382800432475 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C86E08832C73382800432475 /* AppDelegate.swift */; };
-		C86E08872C733A0D00432475 /* Space.swift in Sources */ = {isa = PBXBuildFile; fileRef = C86E08862C733A0D00432475 /* Space.swift */; };
-		C86E08892C733A2E00432475 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = C86E08882C733A2E00432475 /* Color.swift */; };
-		C86E088B2C733F7200432475 /* StatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C86E088A2C733F7200432475 /* StatusBar.swift */; };
+		323089942C81F0A6009F6AFB /* CustomTabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323089932C81F0A6009F6AFB /* CustomTabs.swift */; };
+		323089972C81F202009F6AFB /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323089962C81F202009F6AFB /* Color.swift */; };
+		3230899A2C81F25E009F6AFB /* Space.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323089992C81F25E009F6AFB /* Space.swift */; };
+		3230899E2C820184009F6AFB /* StateUserDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3230899D2C820184009F6AFB /* StateUserDefault.swift */; };
+		3296AD1E2C85E18D004D81E9 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3296AD1D2C85E18D004D81E9 /* Types.swift */; };
+		3296AD202C86000C004D81E9 /* ScreenshotService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3296AD1F2C86000C004D81E9 /* ScreenshotService.swift */; };
+		3296AD222C86003D004D81E9 /* ClipboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3296AD212C86003D004D81E9 /* ClipboardService.swift */; };
+		3296AD252C860805004D81E9 /* OCRYoudaoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3296AD242C860805004D81E9 /* OCRYoudaoService.swift */; };
+		3296AD282C860860004D81E9 /* ImageUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3296AD272C860860004D81E9 /* ImageUtil.swift */; };
+		3296AD2A2C8608DF004D81E9 /* OCRSpaceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3296AD292C8608DF004D81E9 /* OCRSpaceService.swift */; };
+		3296AD2C2C861338004D81E9 /* FlowService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3296AD2B2C861338004D81E9 /* FlowService.swift */; };
+		C8416AC62C859B0300AF36EB /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8416AC52C859B0300AF36EB /* Keys.swift */; };
+		C8416AC92C859D9400AF36EB /* AppStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8416AC82C859D9400AF36EB /* AppStorage.swift */; };
+		C8416ACC2C85AA9B00AF36EB /* Configurations.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8416ACB2C85AA9B00AF36EB /* Configurations.swift */; };
+		C8416ACE2C85B09400AF36EB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8416ACD2C85B09400AF36EB /* AppDelegate.swift */; };
+		C87368122C8194480058C473 /* MainApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87368112C8194480058C473 /* MainApp.swift */; };
+		C87368142C8194480058C473 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87368132C8194480058C473 /* ContentView.swift */; };
+		C87368162C81944A0058C473 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C87368152C81944A0058C473 /* Assets.xcassets */; };
+		C87368192C81944A0058C473 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C87368182C81944A0058C473 /* Preview Assets.xcassets */; };
+		C87368222C8195490058C473 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C87368212C8195490058C473 /* RealmSwift */; };
+		C87368242C81975A0058C473 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = C87368212C8195490058C473 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		C87368272C81A6A80058C473 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87368262C81A6A80058C473 /* HomeView.swift */; };
+		C87368292C81A6C40058C473 /* FlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87368282C81A6C40058C473 /* FlowView.swift */; };
+		C873682B2C81A6E50058C473 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C873682A2C81A6E50058C473 /* SettingsView.swift */; };
+		C873682D2C81A7060058C473 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C873682C2C81A7060058C473 /* ChatView.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		C87368252C81975A0058C473 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C87368242C81975A0058C473 /* RealmSwift in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
-		32AA08742C762D4000A1A974 /* LoginItemsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginItemsService.swift; sourceTree = "<group>"; };
-		32AA08762C762D7B00A1A974 /* LogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogView.swift; sourceTree = "<group>"; };
-		32ACC49E2C736BB600CFE9C9 /* ImageUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUtil.swift; sourceTree = "<group>"; };
-		32ACC4A02C736D7900CFE9C9 /* OCRYoudaoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRYoudaoService.swift; sourceTree = "<group>"; };
-		32ACC4A22C737B4C00CFE9C9 /* ExcuteFlowService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExcuteFlowService.swift; sourceTree = "<group>"; };
-		C800CF9B2C72F2230091ECD0 /* ShortcutsAI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShortcutsAI.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		C800CF9E2C72F2230091ECD0 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
-		C800CFA02C72F2230091ECD0 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
-		C800CFA22C72F2250091ECD0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		C800CFA52C72F2250091ECD0 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		C800CFA72C72F2250091ECD0 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
-		C800CFAA2C72F2250091ECD0 /* ShortcutsAI.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ShortcutsAI.xcdatamodel; sourceTree = "<group>"; };
-		C800CFAC2C72F2250091ECD0 /* ShortcutsAI.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShortcutsAI.entitlements; sourceTree = "<group>"; };
-		C800CFB72C72F3F00091ECD0 /* FlowService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowService.swift; sourceTree = "<group>"; };
-		C800CFB92C72F41E0091ECD0 /* OpenAIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIService.swift; sourceTree = "<group>"; };
-		C800CFBB2C72F4350091ECD0 /* ScreenshotService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotService.swift; sourceTree = "<group>"; };
-		C800CFBD2C72F4540091ECD0 /* ClipboardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardService.swift; sourceTree = "<group>"; };
-		C800CFBF2C730BF60091ECD0 /* LogService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogService.swift; sourceTree = "<group>"; };
-		C800CFC12C731D0E0091ECD0 /* AppConfigService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfigService.swift; sourceTree = "<group>"; };
-		C86E087D2C73377B00432475 /* IndexView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexView.swift; sourceTree = "<group>"; };
-		C86E087F2C73378A00432475 /* FlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowView.swift; sourceTree = "<group>"; };
-		C86E08812C7337A500432475 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		C86E08832C73382800432475 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		C86E08862C733A0D00432475 /* Space.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Space.swift; sourceTree = "<group>"; };
-		C86E08882C733A2E00432475 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
-		C86E088A2C733F7200432475 /* StatusBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBar.swift; sourceTree = "<group>"; };
+		323089932C81F0A6009F6AFB /* CustomTabs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabs.swift; sourceTree = "<group>"; };
+		323089962C81F202009F6AFB /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		323089992C81F25E009F6AFB /* Space.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Space.swift; sourceTree = "<group>"; };
+		3230899D2C820184009F6AFB /* StateUserDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateUserDefault.swift; sourceTree = "<group>"; };
+		3296AD1D2C85E18D004D81E9 /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
+		3296AD1F2C86000C004D81E9 /* ScreenshotService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ScreenshotService.swift; path = ShortcutsAI/Service/ScreenshotService.swift; sourceTree = SOURCE_ROOT; };
+		3296AD212C86003D004D81E9 /* ClipboardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ClipboardService.swift; path = ShortcutsAI/Service/ClipboardService.swift; sourceTree = SOURCE_ROOT; };
+		3296AD242C860805004D81E9 /* OCRYoudaoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRYoudaoService.swift; sourceTree = "<group>"; };
+		3296AD272C860860004D81E9 /* ImageUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUtil.swift; sourceTree = "<group>"; };
+		3296AD292C8608DF004D81E9 /* OCRSpaceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRSpaceService.swift; sourceTree = "<group>"; };
+		3296AD2B2C861338004D81E9 /* FlowService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowService.swift; sourceTree = "<group>"; };
+		C8416AC52C859B0300AF36EB /* Keys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keys.swift; sourceTree = "<group>"; };
+		C8416AC82C859D9400AF36EB /* AppStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStorage.swift; sourceTree = "<group>"; };
+		C8416ACB2C85AA9B00AF36EB /* Configurations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configurations.swift; sourceTree = "<group>"; };
+		C8416ACD2C85B09400AF36EB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		C873680E2C8194480058C473 /* ShortcutsAI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShortcutsAI.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C87368112C8194480058C473 /* MainApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainApp.swift; sourceTree = "<group>"; };
+		C87368132C8194480058C473 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		C87368152C81944A0058C473 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C87368182C81944A0058C473 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		C873681A2C81944A0058C473 /* ShortcutsAI.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShortcutsAI.entitlements; sourceTree = "<group>"; };
+		C87368262C81A6A80058C473 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		C87368282C81A6C40058C473 /* FlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowView.swift; sourceTree = "<group>"; };
+		C873682A2C81A6E50058C473 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		C873682C2C81A7060058C473 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		C800CF982C72F2230091ECD0 /* Frameworks */ = {
+		C873680B2C8194480058C473 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C87368222C8195490058C473 /* RealmSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		32ACC49D2C736B4B00CFE9C9 /* Utils */ = {
+		323089912C81F07C009F6AFB /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				32ACC49E2C736BB600CFE9C9 /* ImageUtil.swift */,
-			);
-			path = Utils;
-			sourceTree = "<group>";
-		};
-		C800CF922C72F2230091ECD0 = {
-			isa = PBXGroup;
-			children = (
-				C800CF9D2C72F2230091ECD0 /* ShortcutsAI */,
-				C800CF9C2C72F2230091ECD0 /* Products */,
-			);
-			sourceTree = "<group>";
-		};
-		C800CF9C2C72F2230091ECD0 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				C800CF9B2C72F2230091ECD0 /* ShortcutsAI.app */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		C800CF9D2C72F2230091ECD0 /* ShortcutsAI */ = {
-			isa = PBXGroup;
-			children = (
-				C86E08852C7339EF00432475 /* Extension */,
-				C800CFB42C72F2520091ECD0 /* Services */,
-				C800CFB32C72F2440091ECD0 /* Components */,
-				C800CFB22C72F23A0091ECD0 /* Views */,
-				32ACC49D2C736B4B00CFE9C9 /* Utils */,
-				C800CF9E2C72F2230091ECD0 /* App.swift */,
-				C86E08832C73382800432475 /* AppDelegate.swift */,
-				C800CFA22C72F2250091ECD0 /* Assets.xcassets */,
-				C800CFA02C72F2230091ECD0 /* MainView.swift */,
-				C800CFA72C72F2250091ECD0 /* Persistence.swift */,
-				C800CFAC2C72F2250091ECD0 /* ShortcutsAI.entitlements */,
-				C800CFA92C72F2250091ECD0 /* ShortcutsAI.xcdatamodeld */,
-				C800CFA42C72F2250091ECD0 /* Preview Content */,
-			);
-			path = ShortcutsAI;
-			sourceTree = "<group>";
-		};
-		C800CFA42C72F2250091ECD0 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				C800CFA52C72F2250091ECD0 /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		C800CFB22C72F23A0091ECD0 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				C86E087D2C73377B00432475 /* IndexView.swift */,
-				C86E087F2C73378A00432475 /* FlowView.swift */,
-				C86E08812C7337A500432475 /* SettingsView.swift */,
-				32AA08762C762D7B00A1A974 /* LogView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		C800CFB32C72F2440091ECD0 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				C86E08862C733A0D00432475 /* Space.swift */,
-				C86E088A2C733F7200432475 /* StatusBar.swift */,
+				323089932C81F0A6009F6AFB /* CustomTabs.swift */,
+				323089992C81F25E009F6AFB /* Space.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
 		};
-		C800CFB42C72F2520091ECD0 /* Services */ = {
+		323089952C81F1F5009F6AFB /* Extension */ = {
 			isa = PBXGroup;
 			children = (
-				C800CFB72C72F3F00091ECD0 /* FlowService.swift */,
-				C800CFB92C72F41E0091ECD0 /* OpenAIService.swift */,
-				C800CFBB2C72F4350091ECD0 /* ScreenshotService.swift */,
-				C800CFBD2C72F4540091ECD0 /* ClipboardService.swift */,
-				C800CFBF2C730BF60091ECD0 /* LogService.swift */,
-				C800CFC12C731D0E0091ECD0 /* AppConfigService.swift */,
-				32ACC4A02C736D7900CFE9C9 /* OCRYoudaoService.swift */,
-				32ACC4A22C737B4C00CFE9C9 /* ExcuteFlowService.swift */,
-				32AA08742C762D4000A1A974 /* LoginItemsService.swift */,
-			);
-			path = Services;
-			sourceTree = "<group>";
-		};
-		C86E08852C7339EF00432475 /* Extension */ = {
-			isa = PBXGroup;
-			children = (
-				C86E08882C733A2E00432475 /* Color.swift */,
+				C8416AC82C859D9400AF36EB /* AppStorage.swift */,
+				323089962C81F202009F6AFB /* Color.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		3230899B2C82015A009F6AFB /* PropertyWrapper */ = {
+			isa = PBXGroup;
+			children = (
+				3230899D2C820184009F6AFB /* StateUserDefault.swift */,
+			);
+			path = PropertyWrapper;
+			sourceTree = "<group>";
+		};
+		3296AD232C8606E8004D81E9 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				3296AD212C86003D004D81E9 /* ClipboardService.swift */,
+				3296AD1F2C86000C004D81E9 /* ScreenshotService.swift */,
+				3296AD242C860805004D81E9 /* OCRYoudaoService.swift */,
+				3296AD292C8608DF004D81E9 /* OCRSpaceService.swift */,
+				3296AD2B2C861338004D81E9 /* FlowService.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		3296AD262C860841004D81E9 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				3296AD272C860860004D81E9 /* ImageUtil.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		C8416ACA2C85AA8300AF36EB /* Configs */ = {
+			isa = PBXGroup;
+			children = (
+				C8416ACB2C85AA9B00AF36EB /* Configurations.swift */,
+			);
+			path = Configs;
+			sourceTree = "<group>";
+		};
+		C87368052C8194480058C473 = {
+			isa = PBXGroup;
+			children = (
+				C87368102C8194480058C473 /* ShortcutsAI */,
+				C873680F2C8194480058C473 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C873680F2C8194480058C473 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C873680E2C8194480058C473 /* ShortcutsAI.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C87368102C8194480058C473 /* ShortcutsAI */ = {
+			isa = PBXGroup;
+			children = (
+				3296AD232C8606E8004D81E9 /* Service */,
+				C8416ACA2C85AA8300AF36EB /* Configs */,
+				3230899B2C82015A009F6AFB /* PropertyWrapper */,
+				323089952C81F1F5009F6AFB /* Extension */,
+				323089912C81F07C009F6AFB /* Components */,
+				C87368232C81957D0058C473 /* Views */,
+				3296AD262C860841004D81E9 /* Utils */,
+				C87368112C8194480058C473 /* MainApp.swift */,
+				C87368132C8194480058C473 /* ContentView.swift */,
+				C87368152C81944A0058C473 /* Assets.xcassets */,
+				C873681A2C81944A0058C473 /* ShortcutsAI.entitlements */,
+				C87368172C81944A0058C473 /* Preview Content */,
+				C8416AC52C859B0300AF36EB /* Keys.swift */,
+				C8416ACD2C85B09400AF36EB /* AppDelegate.swift */,
+				3296AD1D2C85E18D004D81E9 /* Types.swift */,
+			);
+			path = ShortcutsAI;
+			sourceTree = "<group>";
+		};
+		C87368172C81944A0058C473 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				C87368182C81944A0058C473 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		C87368232C81957D0058C473 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C87368262C81A6A80058C473 /* HomeView.swift */,
+				C87368282C81A6C40058C473 /* FlowView.swift */,
+				C873682A2C81A6E50058C473 /* SettingsView.swift */,
+				C873682C2C81A7060058C473 /* ChatView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C800CF9A2C72F2230091ECD0 /* ShortcutsAI */ = {
+		C873680D2C8194480058C473 /* ShortcutsAI */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C800CFAF2C72F2250091ECD0 /* Build configuration list for PBXNativeTarget "ShortcutsAI" */;
+			buildConfigurationList = C873681D2C81944A0058C473 /* Build configuration list for PBXNativeTarget "ShortcutsAI" */;
 			buildPhases = (
-				C800CF972C72F2230091ECD0 /* Sources */,
-				C800CF982C72F2230091ECD0 /* Frameworks */,
-				C800CF992C72F2230091ECD0 /* Resources */,
+				C873680A2C8194480058C473 /* Sources */,
+				C873680B2C8194480058C473 /* Frameworks */,
+				C873680C2C8194480058C473 /* Resources */,
+				C87368252C81975A0058C473 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = ShortcutsAI;
+			packageProductDependencies = (
+				C87368212C8195490058C473 /* RealmSwift */,
+			);
 			productName = ShortcutsAI;
-			productReference = C800CF9B2C72F2230091ECD0 /* ShortcutsAI.app */;
+			productReference = C873680E2C8194480058C473 /* ShortcutsAI.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		C800CF932C72F2230091ECD0 /* Project object */ = {
+		C87368062C8194480058C473 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1520;
 				LastUpgradeCheck = 1520;
 				TargetAttributes = {
-					C800CF9A2C72F2230091ECD0 = {
+					C873680D2C8194480058C473 = {
 						CreatedOnToolsVersion = 15.2;
 					};
 				};
 			};
-			buildConfigurationList = C800CF962C72F2230091ECD0 /* Build configuration list for PBXProject "ShortcutsAI" */;
+			buildConfigurationList = C87368092C8194480058C473 /* Build configuration list for PBXProject "ShortcutsAI" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -212,62 +246,64 @@
 				en,
 				Base,
 			);
-			mainGroup = C800CF922C72F2230091ECD0;
-			productRefGroup = C800CF9C2C72F2230091ECD0 /* Products */;
+			mainGroup = C87368052C8194480058C473;
+			packageReferences = (
+				C87368202C8195480058C473 /* XCRemoteSwiftPackageReference "realm-swift" */,
+			);
+			productRefGroup = C873680F2C8194480058C473 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C800CF9A2C72F2230091ECD0 /* ShortcutsAI */,
+				C873680D2C8194480058C473 /* ShortcutsAI */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		C800CF992C72F2230091ECD0 /* Resources */ = {
+		C873680C2C8194480058C473 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C800CFA62C72F2250091ECD0 /* Preview Assets.xcassets in Resources */,
-				C800CFA32C72F2250091ECD0 /* Assets.xcassets in Resources */,
+				C87368192C81944A0058C473 /* Preview Assets.xcassets in Resources */,
+				C87368162C81944A0058C473 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		C800CF972C72F2230091ECD0 /* Sources */ = {
+		C873680A2C8194480058C473 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C86E088B2C733F7200432475 /* StatusBar.swift in Sources */,
-				32ACC4A32C737B4C00CFE9C9 /* ExcuteFlowService.swift in Sources */,
-				C800CFA82C72F2250091ECD0 /* Persistence.swift in Sources */,
-				C800CFB82C72F3F00091ECD0 /* FlowService.swift in Sources */,
-				32ACC4A12C736D7900CFE9C9 /* OCRYoudaoService.swift in Sources */,
-				C800CFAB2C72F2250091ECD0 /* ShortcutsAI.xcdatamodeld in Sources */,
-				C86E087E2C73377B00432475 /* IndexView.swift in Sources */,
-				C86E08842C73382800432475 /* AppDelegate.swift in Sources */,
-				C86E08892C733A2E00432475 /* Color.swift in Sources */,
-				32AA08772C762D7B00A1A974 /* LogView.swift in Sources */,
-				C86E08872C733A0D00432475 /* Space.swift in Sources */,
-				C800CFBE2C72F4540091ECD0 /* ClipboardService.swift in Sources */,
-				32ACC49F2C736BB600CFE9C9 /* ImageUtil.swift in Sources */,
-				C800CFC02C730BF60091ECD0 /* LogService.swift in Sources */,
-				C800CFA12C72F2230091ECD0 /* MainView.swift in Sources */,
-				C800CFBC2C72F4350091ECD0 /* ScreenshotService.swift in Sources */,
-				C86E08802C73378A00432475 /* FlowView.swift in Sources */,
-				C800CFC22C731D0E0091ECD0 /* AppConfigService.swift in Sources */,
-				C800CF9F2C72F2230091ECD0 /* App.swift in Sources */,
-				C800CFBA2C72F41E0091ECD0 /* OpenAIService.swift in Sources */,
-				C86E08822C7337A500432475 /* SettingsView.swift in Sources */,
-				32AA08752C762D4000A1A974 /* LoginItemsService.swift in Sources */,
+				3296AD2C2C861338004D81E9 /* FlowService.swift in Sources */,
+				C873682B2C81A6E50058C473 /* SettingsView.swift in Sources */,
+				3296AD202C86000C004D81E9 /* ScreenshotService.swift in Sources */,
+				C87368292C81A6C40058C473 /* FlowView.swift in Sources */,
+				C87368272C81A6A80058C473 /* HomeView.swift in Sources */,
+				3296AD1E2C85E18D004D81E9 /* Types.swift in Sources */,
+				C87368142C8194480058C473 /* ContentView.swift in Sources */,
+				C8416ACE2C85B09400AF36EB /* AppDelegate.swift in Sources */,
+				C8416AC62C859B0300AF36EB /* Keys.swift in Sources */,
+				C873682D2C81A7060058C473 /* ChatView.swift in Sources */,
+				3296AD282C860860004D81E9 /* ImageUtil.swift in Sources */,
+				323089972C81F202009F6AFB /* Color.swift in Sources */,
+				323089942C81F0A6009F6AFB /* CustomTabs.swift in Sources */,
+				3296AD252C860805004D81E9 /* OCRYoudaoService.swift in Sources */,
+				3296AD222C86003D004D81E9 /* ClipboardService.swift in Sources */,
+				C8416ACC2C85AA9B00AF36EB /* Configurations.swift in Sources */,
+				C87368122C8194480058C473 /* MainApp.swift in Sources */,
+				C8416AC92C859D9400AF36EB /* AppStorage.swift in Sources */,
+				3296AD2A2C8608DF004D81E9 /* OCRSpaceService.swift in Sources */,
+				3230899E2C820184009F6AFB /* StateUserDefault.swift in Sources */,
+				3230899A2C81F25E009F6AFB /* Space.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		C800CFAD2C72F2250091ECD0 /* Debug */ = {
+		C873681B2C81944A0058C473 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -330,7 +366,7 @@
 			};
 			name = Debug;
 		};
-		C800CFAE2C72F2250091ECD0 /* Release */ = {
+		C873681C2C81944A0058C473 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -385,13 +421,13 @@
 			};
 			name = Release;
 		};
-		C800CFB02C72F2250091ECD0 /* Debug */ = {
+		C873681E2C81944A0058C473 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = ShortcutsAI/ShortcutsAI.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -400,8 +436,6 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = ShortcutsAI;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -416,13 +450,13 @@
 			};
 			name = Debug;
 		};
-		C800CFB12C72F2250091ECD0 /* Release */ = {
+		C873681F2C81944A0058C473 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = ShortcutsAI/ShortcutsAI.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -431,8 +465,6 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = ShortcutsAI;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -450,38 +482,44 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C800CF962C72F2230091ECD0 /* Build configuration list for PBXProject "ShortcutsAI" */ = {
+		C87368092C8194480058C473 /* Build configuration list for PBXProject "ShortcutsAI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C800CFAD2C72F2250091ECD0 /* Debug */,
-				C800CFAE2C72F2250091ECD0 /* Release */,
+				C873681B2C81944A0058C473 /* Debug */,
+				C873681C2C81944A0058C473 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C800CFAF2C72F2250091ECD0 /* Build configuration list for PBXNativeTarget "ShortcutsAI" */ = {
+		C873681D2C81944A0058C473 /* Build configuration list for PBXNativeTarget "ShortcutsAI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C800CFB02C72F2250091ECD0 /* Debug */,
-				C800CFB12C72F2250091ECD0 /* Release */,
+				C873681E2C81944A0058C473 /* Debug */,
+				C873681F2C81944A0058C473 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCVersionGroup section */
-		C800CFA92C72F2250091ECD0 /* ShortcutsAI.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				C800CFAA2C72F2250091ECD0 /* ShortcutsAI.xcdatamodel */,
-			);
-			currentVersion = C800CFAA2C72F2250091ECD0 /* ShortcutsAI.xcdatamodel */;
-			path = ShortcutsAI.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
+/* Begin XCRemoteSwiftPackageReference section */
+		C87368202C8195480058C473 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.53.0;
+			};
 		};
-/* End XCVersionGroup section */
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C87368212C8195490058C473 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C87368202C8195480058C473 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
-	rootObject = C800CF932C72F2230091ECD0 /* Project object */;
+	rootObject = C87368062C8194480058C473 /* Project object */;
 }

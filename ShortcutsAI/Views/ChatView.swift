@@ -1,5 +1,5 @@
 //
-//  FlowView.swift
+//  ChatView.swift
 //  ShortcutsAI
 //
 //  Created by Yichen Wong on 2024/8/30.

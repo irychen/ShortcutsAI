@@ -2,259 +2,191 @@
 //  SettingsView.swift
 //  ShortcutsAI
 //
-//  Created by Yichen Wong on 2024/8/11.
+//  Created by Yichen Wong on 2024/8/30.
 //
 
+import AppKit
 import Foundation
+import RealmSwift
 import SwiftUI
 
 struct SettingsView: View {
-    @Environment(\.managedObjectContext) private var viewContext
+    class Settings: ObservableObject {
+        // ------------ section of OpenAI Service ------------
+        @AppStorage(\.openAIKey) var openAIKey: String
+        @AppStorage(\.openAIBaseURL) var openAIBaseURL: String
+        @AppStorage(\.defaultFlowModel) var defaultFlowModel: String
+        @AppStorage(\.openAImodels) var openAIModels: [String]
 
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Flow.order, ascending: true)],
-        animation: .default)
-    private var flows: FetchedResults<Flow>
-    
-    @State private var alertTitle = ""
-    @State private var alertMessage = ""
-    @State private var showAlert = false
-    
-    @State var ocrYoudaoAppKey: String = ""
-    @State var ocrYoudaoAppSecret: String = ""
-    
-    @State var openAIBaseURL: String = ""
-    @State var openAIKey: String = ""
-    @State var model: String = ""
+        // ------------ section of OCR Service ------------
+        @AppStorage(\.selectedOCRService) var selectedOCRService: String
+        @AppStorage(\.ocrYoudaoAppKey) var ocrYoudaoAppKey: String
+        @AppStorage(\.ocrYoudaoAppSecret) var ocrYoudaoAppSecret: String
+        @AppStorage(\.ocrSpaceAPIKey) var ocrSpaceAPIKey: String
+        @AppStorage(\.ocrSpacePreferredLanguage) var ocrSpacePreferredLanguage: String
 
-    @State var autoSaveToClipboard: Bool = false
-    @State var autoStartOnBoot: Bool = false
-    @State var shortcutFlowName: String = ""
-    
-    @State private var selectedFlowIndex: Int = 0
-    
+        // ------------ section of Other ------------
+        @AppStorage(\.shortcutsFlowName) var shortcutsFlowName: String
+        @AppStorage(\.autoSaveToClipboard) var autoSaveToClipboard: Bool
+        @AppStorage(\.autoStartOnBoot) var autoStartOnBoot: Bool
+        @AppStorage(\.autoOpenResultPanel) var autoOpenResultPanel: Bool
+
+        init() {}
+    }
+
+    @StateObject var settings = Settings()
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text("Settings")
-                .font(.title)
-                .padding([.top,.leading], 10)
-            
-            Form {
-                Section(header: Text("OpenAI").bold()) {
-                    CustomTextField(label: "Model", text: $model)
-                    CustomTextField(label: "Base URL", text: $openAIBaseURL)
-                    CustomTextField(label: "API Key", text: $openAIKey, password: true)
-                }
-                
-                Section(header: Text("Youdao OCR").bold().padding(.top, 10) ) {
-                    CustomTextField(label: "App Key", text: $ocrYoudaoAppKey,password: true)
-                    CustomTextField(label: "App Secret", text: $ocrYoudaoAppSecret,password: true)
-                    Link("Click here to get Youdao OCR API Key and Secret", destination: URL(string: "https://ai.youdao.com")!).font(.caption)
-                }
-                
-                Section(header: Text("Other").bold().padding(.top, 10) ) {
-                    Picker("Defalut AI Flow", selection: $selectedFlowIndex) {
-                        ForEach(flows.indices, id: \.self) { index in
-                            Text(flows[index].name ?? "select").tag(index)
+        VStack {
+            HStack {
+                Text("Settings")
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(.bottom, 10)
+                    .background(Color.white.opacity(0.001))
+                    .font(.system(size: 18, weight: .bold))
+            }
+            .draggable()
+            Rectangle().fill(Color.gray.opacity(0.1)).frame(height: 2).padding(.horizontal, 0).padding(.vertical, 0)
+            VStack(alignment: .leading, spacing: 0) {
+                ScrollView(.vertical) {
+                    VStack {
+                        Form {
+                            Section(header: Text("OpenAI Service").bold()) {
+                                CustomTextField(label: "API Key", text: $settings.openAIKey, placeholder: "OpenAI API Key", password: true)
+                                HStack {
+                                    CustomTextField(label: "Base URL", text: $settings.openAIBaseURL, placeholder: "Like https://api.openai.com")
+                                    Button(action: {}) {
+                                        Text("Test Connection").frame(width: 120)
+                                    }
+                                }
+
+                                HStack {
+                                    Picker("Default Flow Model", selection: $settings.defaultFlowModel) {
+                                        ForEach(
+                                            settings.openAIModels.map { SelectOption(value: $0, label: $0) },
+                                            id: \.value
+                                        ) { option in
+                                            Text(option.label).tag(option.value)
+                                        }
+                                    }
+                                }
+                            }
+
+                            Section(header: Text("OCR Service").bold().padding(.top, 10)) {
+                                Picker("Service Provider", selection: $settings.selectedOCRService) {
+                                    ForEach(OCRServiceOptions) { option in
+                                        Text(option.label).tag(option.value)
+                                    }
+                                }
+                                .pickerStyle(MenuPickerStyle())
+
+                                Group {
+                                    if settings.selectedOCRService == "youdao" {
+                                        CustomTextField(label: "App Key", text: $settings.ocrYoudaoAppKey, placeholder: "App Key", password: true)
+                                        CustomTextField(label: "App Secret", text: $settings.ocrYoudaoAppSecret, placeholder: "App Secret", password: true)
+                                        Link("Click here to get youdao OCR app Key and Secret", destination: URL(string: "https://ai.youdao.com")!).font(.caption)
+                                    } else if settings.selectedOCRService == "ocrspace" {
+                                        Picker("Language", selection: $settings.ocrSpacePreferredLanguage) {
+                                            ForEach(
+                                                languageOptions,
+                                                id: \.value
+                                            ) { option in
+                                                Text(option.label).tag(option.value)
+                                            }
+                                        }
+                                        .pickerStyle(MenuPickerStyle())
+                                        CustomTextField(label: "API Key", text: $settings.ocrSpaceAPIKey, placeholder: "API Key", password: true)
+                                        Link("Click here to get ocr.space API Key", destination: URL(string: "https://ocr.space/ocrapi/freekey")!).font(.caption)
+
+                                    } else {
+                                        Text("No Service Selected")
+                                    }
+                                }
+                            }
+
+                            Section(header: Text("Other").bold().padding(.top, 10)) {
+                                Picker("Shortcut Flow", selection: $settings.shortcutsFlowName) {
+                                    ForEach(
+                                        [
+                                            SelectOption(value: "Translate", label: "Translate"),
+                                            SelectOption(value: "OCR", label: "OCR"),
+                                        ],
+                                        id: \.value
+                                    ) { option in
+                                        Text(option.label).tag(option.value)
+                                    }
+                                }
+                                .pickerStyle(MenuPickerStyle())
+                                Text("This flow is for statusbar right click screenshot OCR.").font(.caption)
+
+                                Toggle(isOn: $settings.autoSaveToClipboard) {
+                                    Text("Auto save result to clipboard")
+                                }
+
+                                Toggle(isOn: $settings.autoOpenResultPanel) {
+                                    Text("Open result panel after running flow from status bar")
+                                }
+
+                                Toggle(isOn: $settings.autoStartOnBoot) {
+                                    Text("Auto start on boot")
+                                }
+                            }
                         }
-                    }
-                    .pickerStyle(MenuPickerStyle())
-                    .padding([.horizontal], 10)
-                    Text("This flow is for statusbar right click screenshot OCR.").font(.caption)
-                    
-                    // auto_save_to_clipboard
-                    Toggle(isOn: $autoSaveToClipboard) {
-                        Text("Auto Save to Clipboard")
-                    }
-                    
-                    // auto_start_on_boot
-                    Toggle(isOn: $autoStartOnBoot) {
-                        Text("Auto Start on Boot")
-                    }
-                }
-                
-            }.padding()
-            
-            HStack(alignment: .center,content: ({
-                Spacer(minLength: 0)
-                Space(direction:.horizontal, content: ({
-                    Button(action: {
-                        save()
-                    }) {
-                        Text("Save Settings")
-                            .font(.custom("Arial", fixedSize: 14))
-                            .padding([.top, .bottom], 5)
-                            .padding([.leading, .trailing], 20)
-                    }
-                    
-                    .buttonStyle(PrimaryButtonStyle())
-                    .padding([.leading, .trailing, .bottom], 10)
-                    .shadow(color: Color(hex: "#33333333"), radius: 2, x: 0, y: 0)
-                    .alert(isPresented: $showAlert) {
-                        Alert(title: Text("Success"), message: Text("Settings saved successfully"), dismissButton: .default(Text("OK")))
-                    }
-                    Button(action: {
-                        clearAndQuit()
-                    }) {
-                        Text("Clean All Data and Quit")
-                            .font(.custom("Arial", fixedSize: 14))
-                            .padding([.top, .bottom], 5)
-                            .padding([.leading, .trailing], 20)
-                    }
-                    .buttonStyle(DangerButtonStyle())
-                    .padding([.leading, .trailing, .bottom], 10)
-                    .shadow(color: Color(hex: "#33333333"), radius: 2, x: 0, y: 0)
-                }))
-                Spacer(minLength: 0)
-            }))
-            Spacer(minLength: 0)
-        }.padding(.bottom, 20).onAppear {
-                loadAppConfig()
-                loadFlows()
-            }.alert(isPresented: $showAlert) {
-                Alert(title: Text(alertTitle), message: Text(alertMessage), dismissButton: .default(Text("OK")))
-            }
-    }
-    
-    func loadFlows(){
-        let flows = FlowService.shared.findAll()
-        if !flows.isEmpty {
-            let appConfig = AppConfigService.shared.get()
-            if let shortcutFlowName = appConfig?.shortcutFlowName {
-                // get flow index by name
-                for (index, flow) in flows.enumerated() {
-                    if flow.name == shortcutFlowName {
-                        selectedFlowIndex = index
-                        break
-                    }
+                    }.padding(.horizontal, 20).padding(.vertical, 14)
                 }
             }
-        }else{
-            selectedFlowIndex = 0
         }
-    }
-    
-    func  loadAppConfig(){
-        let appConfig = AppConfigService.shared.get()
-        autoSaveToClipboard = appConfig?.autoSaveToClipboard ?? false
-        autoStartOnBoot = appConfig?.autoStartOnBoot ?? false
-        
-        shortcutFlowName = appConfig?.shortcutFlowName ?? ""
-        
-        ocrYoudaoAppKey = appConfig?.ocrYoudaoAppKey ?? ""
-        ocrYoudaoAppSecret = appConfig?.ocrYoudaoAppSecret ?? ""
-        
-        openAIBaseURL = appConfig?.openAIBaseURL ?? ""
-        openAIKey = appConfig?.openAIKey ?? ""
-        model = appConfig?.model ?? ""
-        
-    }
-    
-    func save(){
-        let appConfigSv = AppConfigService.shared
-        appConfigSv.update(dto: UpdateAppConfigRequest(
-            shortcutFlowName: flows[selectedFlowIndex].name,
-            openAIBaseURL: openAIBaseURL,
-            openAIKey: openAIKey,
-            model: model,
-            ocrYoudaoAppKey: ocrYoudaoAppKey,
-            ocrYoudaoAppSecret: ocrYoudaoAppSecret,
-            autoSaveToClipboard: autoSaveToClipboard,
-            autoStartOnBoot: autoStartOnBoot
-        ))
-        let loginItemsSv = LoginItemsService.shared
-        if autoStartOnBoot {
-            if loginItemsSv.isInLoginItems() == false {
-                loginItemsSv.addToLoginItems()
-            }
-        }else{
-            if loginItemsSv.isInLoginItems() {
-                loginItemsSv.removeFromLoginItems()
-            }
-        }
-        
-        alertTitle = "Success"
-        alertMessage = "Settings saved successfully"
-        showAlert = true
-    }
-    
-    func clearAndQuit(){
-        // clear all data
-        FlowService.shared.clearAll()
-        AppConfigService.shared.clear()
-        // quit
-        NSApplication.shared.terminate(self)
     }
 }
 
 struct CustomTextField: View {
     var label: String
     @Binding var text: String
+    var placeholder: String?
     var password: Bool = false
     var disabled: Bool = false
-    
+
     var body: some View {
         Group {
             if password {
-                SecureField(label, text: $text)
+                SecureField(label, text: $text, prompt: Text(placeholder ?? ""))
                     .textFieldStyle(.roundedBorder)
+                    .disableAutocorrection(true)
             } else {
-                TextField(label, text: $text)
+                TextField(label, text: $text, prompt: Text(placeholder ?? ""))
                     .textFieldStyle(.roundedBorder)
+                    .disableAutocorrection(true)
             }
         }
         .cornerRadius(5)
-        .disabled(disabled)  // 应用 disabled 状态
+        .disabled(disabled)
     }
 }
 
+struct DraggableModifier: ViewModifier {
+    @State private var isDragging = false
 
-// custom button style
-struct PrimaryButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-        // #444
-            .background(
-                LinearGradient(
-                    gradient: Gradient(colors: [Color(hex: "#9C99FA"), Color(hex: "#5958D6")]),
-                    startPoint: .leading,
-                    endPoint: .trailing
-                ))
-            .foregroundColor(.white)
-            .cornerRadius(4)
-            .scaleEffect(configuration.isPressed ? 0.95 : 1.0) // 按下时缩放效果
+    func body(content: Content) -> some View {
+        content
+            .gesture(
+                DragGesture(coordinateSpace: .global)
+                    .onChanged { _ in
+                        if !isDragging {
+                            isDragging = true
+                            if let currentEvent = NSApplication.shared.currentEvent {
+                                NSApp.mainWindow?.performDrag(with: currentEvent)
+                            }
+                        }
+                    }
+                    .onEnded { _ in
+                        isDragging = false
+                    }
+            )
     }
 }
 
-
-struct DangerButtonStyle:ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-        // #444
-            .background(
-                LinearGradient(
-                    gradient: Gradient(colors: [Color(hex: "#E26285"), Color(hex: "#E50012")]),
-                    startPoint: .leading,
-                    endPoint: .trailing
-                ))
-            .foregroundColor(.white)
-            .cornerRadius(4)
-            .scaleEffect(configuration.isPressed ? 0.95 : 1.0) // 按下时缩放效果
-    }
-}
-
-struct DefaultButtonStyle:ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-        // #444
-            .background(
-                LinearGradient(
-                    gradient: Gradient(colors: [Color(hex: "#B99ED8"), Color(hex: "#0B7EF2")]),
-                    startPoint: .leading,
-                    endPoint: .trailing
-                ))
-            .foregroundColor(.white)
-            .cornerRadius(4)
-            .scaleEffect(configuration.isPressed ? 0.95 : 1.0) // 按下时缩放效果
+extension View {
+    func draggable() -> some View {
+        modifier(DraggableModifier())
     }
 }
