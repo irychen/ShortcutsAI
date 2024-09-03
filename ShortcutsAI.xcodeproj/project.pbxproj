@@ -18,6 +18,8 @@
 		3296AD282C860860004D81E9 /* ImageUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3296AD272C860860004D81E9 /* ImageUtil.swift */; };
 		3296AD2A2C8608DF004D81E9 /* OCRSpaceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3296AD292C8608DF004D81E9 /* OCRSpaceService.swift */; };
 		3296AD2C2C861338004D81E9 /* FlowService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3296AD2B2C861338004D81E9 /* FlowService.swift */; };
+		32E34FC62C87548600CAC8A8 /* AutoresizingCustomTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E34FC52C87548600CAC8A8 /* AutoresizingCustomTextEditor.swift */; };
+		32E34FC92C875F3A00CAC8A8 /* NormalButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E34FC82C875F3A00CAC8A8 /* NormalButtonStyle.swift */; };
 		C8416AC62C859B0300AF36EB /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8416AC52C859B0300AF36EB /* Keys.swift */; };
 		C8416AC92C859D9400AF36EB /* AppStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8416AC82C859D9400AF36EB /* AppStorage.swift */; };
 		C8416ACC2C85AA9B00AF36EB /* Configurations.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8416ACB2C85AA9B00AF36EB /* Configurations.swift */; };
@@ -60,6 +62,8 @@
 		3296AD272C860860004D81E9 /* ImageUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUtil.swift; sourceTree = "<group>"; };
 		3296AD292C8608DF004D81E9 /* OCRSpaceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRSpaceService.swift; sourceTree = "<group>"; };
 		3296AD2B2C861338004D81E9 /* FlowService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowService.swift; sourceTree = "<group>"; };
+		32E34FC52C87548600CAC8A8 /* AutoresizingCustomTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoresizingCustomTextEditor.swift; sourceTree = "<group>"; };
+		32E34FC82C875F3A00CAC8A8 /* NormalButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalButtonStyle.swift; sourceTree = "<group>"; };
 		C8416AC52C859B0300AF36EB /* Keys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keys.swift; sourceTree = "<group>"; };
 		C8416AC82C859D9400AF36EB /* AppStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStorage.swift; sourceTree = "<group>"; };
 		C8416ACB2C85AA9B00AF36EB /* Configurations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configurations.swift; sourceTree = "<group>"; };
@@ -93,6 +97,7 @@
 			children = (
 				323089932C81F0A6009F6AFB /* CustomTabs.swift */,
 				323089992C81F25E009F6AFB /* Space.swift */,
+				32E34FC52C87548600CAC8A8 /* AutoresizingCustomTextEditor.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -134,6 +139,14 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
+		32E34FC72C875F2C00CAC8A8 /* Styles */ = {
+			isa = PBXGroup;
+			children = (
+				32E34FC82C875F3A00CAC8A8 /* NormalButtonStyle.swift */,
+			);
+			path = Styles;
+			sourceTree = "<group>";
+		};
 		C8416ACA2C85AA8300AF36EB /* Configs */ = {
 			isa = PBXGroup;
 			children = (
@@ -161,6 +174,7 @@
 		C87368102C8194480058C473 /* ShortcutsAI */ = {
 			isa = PBXGroup;
 			children = (
+				32E34FC72C875F2C00CAC8A8 /* Styles */,
 				3296AD232C8606E8004D81E9 /* Service */,
 				C8416ACA2C85AA8300AF36EB /* Configs */,
 				3230899B2C82015A009F6AFB /* PropertyWrapper */,
@@ -276,6 +290,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32E34FC62C87548600CAC8A8 /* AutoresizingCustomTextEditor.swift in Sources */,
 				3296AD2C2C861338004D81E9 /* FlowService.swift in Sources */,
 				C873682B2C81A6E50058C473 /* SettingsView.swift in Sources */,
 				3296AD202C86000C004D81E9 /* ScreenshotService.swift in Sources */,
@@ -285,6 +300,7 @@
 				C87368142C8194480058C473 /* ContentView.swift in Sources */,
 				C8416ACE2C85B09400AF36EB /* AppDelegate.swift in Sources */,
 				C8416AC62C859B0300AF36EB /* Keys.swift in Sources */,
+				32E34FC92C875F3A00CAC8A8 /* NormalButtonStyle.swift in Sources */,
 				C873682D2C81A7060058C473 /* ChatView.swift in Sources */,
 				3296AD282C860860004D81E9 /* ImageUtil.swift in Sources */,
 				323089972C81F202009F6AFB /* Color.swift in Sources */,

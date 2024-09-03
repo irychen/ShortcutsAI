@@ -34,6 +34,7 @@ struct SettingsView: View {
         init() {}
     }
 
+    @State private var showAlert = false
     @StateObject var settings = Settings()
 
     var body: some View {
@@ -131,10 +132,57 @@ struct SettingsView: View {
                                     Text("Auto start on boot")
                                 }
                             }
+
+                            HStack(alignment: .center) {
+                                Button(action: {
+                                    showAlert = true
+                                }) {
+                                    HStack {
+                                        Image(systemName: "exclamationmark.triangle.fill")
+                                        Text("Clean Data")
+                                    }
+                                    .font(.headline)
+                                    .padding(.horizontal, 10)
+                                    .padding(.vertical, 3)
+                                    .foregroundColor(.white)
+                                    .background(
+                                        LinearGradient(
+                                            gradient: Gradient(colors: [Color.red.opacity(0.9), Color.pink.opacity(0.8)]),
+                                            startPoint: .leading,
+                                            endPoint: .trailing
+                                        )
+                                    )
+                                    .cornerRadius(4)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 4)
+                                            .stroke(Color.red.opacity(0.2), lineWidth: 1)
+                                    )
+//                                      .shadow(color: Color.red.opacity(0.3), radius: 3, x: 0, y: 2)
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                                .contentShape(Rectangle())
+                                .alert(isPresented: $showAlert) {
+                                    Alert(
+                                        title: Text("Warning"),
+                                        message: Text("This action will delete all data. Are you sure you want to proceed?"),
+                                        primaryButton: .destructive(Text("Clean")) {
+                                            cleanData()
+                                        },
+                                        secondaryButton: .cancel()
+                                    )
+                                }
+                            }.padding(.top, 10)
                         }
                     }.padding(.horizontal, 20).padding(.vertical, 14)
                 }
             }
+        }
+    }
+
+    func cleanData() {
+        let realm = try! Realm()
+        try! realm.write {
+            realm.deleteAll()
         }
     }
 }
