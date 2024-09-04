@@ -21,6 +21,6 @@ public var keychainService: String {
 }
 
 public let OCRServiceOptions = [
-    SelectOption(value: "youdao", label: "YouDao OCR"),
     SelectOption(value: "ocrspace", label: "OCR Space"),
+    SelectOption(value: "youdao", label: "YouDao OCR"),
 ]

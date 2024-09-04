@@ -28,6 +28,9 @@ public extension UserDefaults {
         shared.setupDefaultValue(for: \.openAImodels)
         shared.setupDefaultValue(for: \.ocrSpacePreferredLanguage)
         shared.setupDefaultValue(for: \.appIsInitialized)
+        
+        shared.setupDefaultValue(for: \.currentAppTabKey)
+        shared.setupDefaultValue(for: \.translateTemperature)
     }
 }
 

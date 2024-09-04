@@ -11,7 +11,7 @@ import RealmSwift
 import SwiftUI
 
 struct FlowView: View {
-    @ObservedResults(Flow.self) var flows
+    @ObservedResults(Flow.self, sortDescriptor: SortDescriptor(keyPath: "order", ascending: true)) var flows
     @State private var showModal = false
     @State private var modalType = "create"
     @State private var currentFlowId: ObjectId?
@@ -102,7 +102,7 @@ struct FlowItemView: View {
                     .foregroundColor(.primary)
                     .lineLimit(1)
                 Text(flow.prompt)
-                    .font(.subheadline)
+                    .font(.system(size: 12))
                     .foregroundColor(.secondary)
                     .lineLimit(4)
                     .lineSpacing(4)
@@ -129,23 +129,28 @@ struct FlowItemView: View {
 }
 
 struct ModalView: View {
+    private var flowSvc = FlowService.shared
+
     @Binding var showModal: Bool
     @Binding var modalType: String
     @Binding var id: ObjectId?
 
     @State private var innerName = ""
-    @State private var model = ""
+    @State private var model = "gpt-4o-mini"
     @State private var prompt = ""
     @State private var fixed = false
     @State private var prefer: String = FlowPrefer.clipboard.rawValue
     @State private var temperature: Float = 0
+    @State private var order = 0
 
     @State private var alertTitle = ""
     @State private var alertMessage = ""
     @State private var showAlert = false
 
-    private var previousName = ""
+    @State private var previousName = ""
 
+    @AppStorage(\.openAImodels) var openAIModels: [String]
+    @AppStorage(\.defaultFlowModel) var defaultFlowModel: String
     init(showModal: Binding<Bool>, modalType: Binding<String>, id: Binding<ObjectId?>) {
         _showModal = showModal
         _modalType = modalType
@@ -160,23 +165,25 @@ struct ModalView: View {
             Form {
                 Text("Name")
                     .font(.system(size: 14).bold())
-                    .padding(.top, 6)
+                    .padding(.top, 10)
                 CustomTextField(label: "", text: $innerName, placeholder: "Enter flow name")
                 // prompt TextField
                 Text("Prompt")
                     .font(.system(size: 14).bold())
-                    .padding(.top, 6)
+                    .padding(.top, 10)
 
                 HStack {
-                    AutoresizingCustomTextEditor(
+                    AutoresizingTextEditor(
                         text: $prompt,
                         font: .systemFont(ofSize: 12),
                         isEditable: true,
-                        maxHeight: 420,
+                        maxHeight: 450,
                         lineSpacing: 4,
                         placeholder: """
                         Enter Your Prompt
                         You can use ${data} to refer to the data you want to process (optional)
+                        example:
+                          "Translate the following text into Chinese: ${data}"
                         """
 
                     ) {}.padding(8).background(
@@ -195,18 +202,24 @@ struct ModalView: View {
                 // prefer Select
                 Text("Prefer")
                     .font(.system(size: 14).bold())
-                    .padding(.top, 6)
+                    .padding(.top, 10)
                 Picker("", selection: $prefer) {
                     ForEach(FlowPrefer.allCases, id: \.rawValue) { prefer in
                         Text(prefer.rawValue).tag(prefer.rawValue)
                     }
                 }
 
-                // model TextField
                 Text("Model")
                     .font(.system(size: 14).bold())
                     .padding(.top, 10)
-                CustomTextField(label: "", text: $model)
+                Picker("", selection: $model) {
+                    ForEach(
+                        openAIModels.map { SelectOption(value: $0, label: $0) },
+                        id: \.value
+                    ) { option in
+                        Text(option.label).tag(option.value)
+                    }
+                }
 
                 // temperature float number
                 HStack {
@@ -215,7 +228,7 @@ struct ModalView: View {
                     Text("\(temperature, specifier: "%.1f")")
                         .font(.system(size: 14))
 
-                }.padding(.top, 6)
+                }.padding(.top, 10)
 
                 Slider(value: Binding(
                     get: {
@@ -228,6 +241,28 @@ struct ModalView: View {
             }
 
             HStack(alignment: .center, content: ({
+                if modalType == "edit" {
+                    // move to bottom
+                    Button(action: {
+                        order += 1
+                    }) {
+                        Image(systemName: "arrow.down")
+                            .foregroundColor(.secondary)
+                    }
+
+                    // show order
+                    Text("Order: \(order)")
+                        .font(.system(size: 14))
+                        .foregroundColor(.secondary)
+
+                    // move to top
+                    Button(action: {
+                        order -= 1
+                    }) {
+                        Image(systemName: "arrow.up")
+                            .foregroundColor(.secondary)
+                    }
+                }
                 Spacer(minLength: 0)
                 Button("Close") {
                     showModal = false
@@ -236,21 +271,19 @@ struct ModalView: View {
 
                 Button(modalType == "create" ? "Create" : "Save") {
                     if modalType == "create" {
-                        // Create action
+                        create()
                     } else {
-                        // Save action
+                        save()
                     }
                 }
                 .buttonStyle(NormalButtonStyle(isPrimary: true))
 
                 if modalType == "edit" {
                     Button("Delete") {
-                        // Delete action
+                        delete(id: id!)
                     }
                     .buttonStyle(NormalButtonStyle(isDanger: true))
                 }
-
-                Spacer(minLength: 0)
 
             })).padding([.top, .bottom], 10)
             Spacer(minLength: 0)
@@ -260,12 +293,12 @@ struct ModalView: View {
         }.alert(isPresented: $showAlert) {
             Alert(title: Text(alertTitle), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         }
-        .frame(width: 480, height: 500).padding()
+        .frame(width: 480, height: 540).padding()
     }
 
     func initFlow() {
         if let id {
-            let flow = FlowService.shared.findFlowById(id)
+            let flow = flowSvc.findFlowById(id)
             if let flow {
                 innerName = flow.name
                 model = flow.model
@@ -273,7 +306,12 @@ struct ModalView: View {
                 fixed = flow.fixed
                 prefer = flow.prefer
                 temperature = flow.temperature
+                order = flow.order
+
+                previousName = flow.name
             }
+        } else {
+            model = defaultFlowModel
         }
     }
 
@@ -298,5 +336,60 @@ struct ModalView: View {
             return pass
         }
         return true
+    }
+
+    func create() {
+        let ok = valid()
+        if !ok {
+            return
+        }
+        // check name
+        let exists = flowSvc.exists(name: innerName)
+        if exists {
+            alertTitle = "Error"
+            alertMessage = "Name already exists"
+            showAlert = true
+            return
+        }
+        let _ = try! flowSvc.createFlow(
+            FlowDto(name: innerName,
+                    prompt: prompt,
+                    model: model,
+                    temperature: temperature,
+                    fixed: fixed,
+                    prefer: prefer,
+                    order: 0)
+        )
+        showModal = false
+    }
+
+    func save() {
+        let ok = valid()
+        if !ok {
+            return
+        }
+        if innerName != previousName {
+            let exists = flowSvc.exists(name: innerName)
+            if exists {
+                alertTitle = "Error"
+                alertMessage = "Name already exists"
+                showAlert = true
+                return
+            }
+        }
+        let _ = try! flowSvc.updateFlow(id!, with:
+            FlowDto(name: innerName,
+                    prompt: prompt,
+                    model: model,
+                    temperature: temperature,
+                    fixed: fixed,
+                    prefer: prefer,
+                    order: order))
+        showModal = false
+    }
+
+    func delete(id: ObjectId) {
+        let _ = try! flowSvc.deleteFlow(id)
+        showModal = false
     }
 }

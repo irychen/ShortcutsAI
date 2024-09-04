@@ -1,9 +1,36 @@
-
-
 import Cocoa
 import CommonCrypto
 import Foundation
 import SwiftUI
+
+enum OCRYoudaoError: Error, CustomStringConvertible {
+    case notFoundAppKey
+    case notFoundAppSecret
+    case requestFailed(String)
+    case invalidResponse(String)
+    case noData
+    case jsonParsingError(String)
+    case unknown(String)
+
+    var description: String {
+        switch self {
+        case .notFoundAppKey:
+            return "App Key Not Found"
+        case .notFoundAppSecret:
+            return "App Secret Not Found"
+        case .requestFailed(let message):
+            return "Request Failed: \(message)"
+        case .invalidResponse(let message):
+            return "Invalid Response: \(message)"
+        case .noData:
+            return "No Data Received"
+        case .jsonParsingError(let message):
+            return "JSON Parsing Error: \(message)"
+        case .unknown(let message):
+            return "Unknown Error: \(message)"
+        }
+    }
+}
 
 class OCRYoudaoService {
     private var youDaoURL = "https://openapi.youdao.com/ocrapi"
@@ -15,25 +42,44 @@ class OCRYoudaoService {
         self.appSecret = appSecret
     }
 
-    func takeOCRSync(image: NSImage) -> String {
+    func takeOCRSync(_ image: NSImage) throws -> String {
         let semaphore = DispatchSemaphore(value: 0)
         var result = ""
-        takeOCR(image: image) { res in
+        var errorOccurred: Error?
+
+        takeOCR(image) { res in
             switch res {
             case let .success(text):
                 result = text
             case let .failure(error):
-//                LogService.shared.log(level: .error, message: "Failed to take Youdao OCR: \(error)")
-                print("Failed to take Youdao OCR: \(error)")
+                errorOccurred = error
             }
             semaphore.signal()
         }
         semaphore.wait()
+
+        if let error = errorOccurred {
+            throw error
+        }
+
         return result
     }
 
-    func takeOCR(image: NSImage, completion: @escaping (Result<String, Error>) -> Void) {
-        let imageBase64Str = ImageUtil.imageToBase64(image: image) ?? ""
+    func takeOCR(_ image: NSImage, completion: @escaping (Result<String, Error>) -> Void) {
+        guard let imageBase64Str = ImageUtil.imageToBase64(image: image) else {
+            completion(.failure(OCRYoudaoError.requestFailed("Failed to convert image to Base64 string")))
+            return
+        }
+        // check if appKey and appSecret are empty
+        if appKey.isEmpty {
+            completion(.failure(OCRYoudaoError.notFoundAppKey))
+            return
+        }
+        if appSecret.isEmpty {
+            completion(.failure(OCRYoudaoError.notFoundAppSecret))
+            return
+        }
+
         // Generate necessary parameters
         let salt = UUID().uuidString
         let curtime = String(Int(Date().timeIntervalSince1970))
@@ -58,34 +104,38 @@ class OCRYoudaoService {
         ]
 
         // Create URL request
-        var request = URLRequest(url: URL(string: youDaoURL)!)
+        guard let url = URL(string: youDaoURL) else {
+            completion(.failure(OCRYoudaoError.requestFailed("Invalid URL")))
+            return
+        }
+
+        var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         request.httpBody = params.percentEncoded()
-
+        request.timeoutInterval = 20.0 // Set timeout interval to 10 seconds
         // Perform the request
         let session = URLSession.shared
-        session.dataTask(with: request) { data, _, error in
-            if let error {
-                completion(.failure(error))
+        session.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(.failure(OCRYoudaoError.requestFailed(error.localizedDescription)))
                 return
             }
 
-            guard let data else {
-                completion(.failure(NSError(domain: "No data", code: -1, userInfo: nil)))
+            guard let data = data else {
+                completion(.failure(OCRYoudaoError.noData))
                 return
             }
 
             do {
                 if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                    //                    print(json)
                     let text = self.parseOCRResult(json: json)
                     completion(.success(text))
                 } else {
-                    completion(.failure(NSError(domain: "Invalid JSON", code: -1, userInfo: nil)))
+                    completion(.failure(OCRYoudaoError.invalidResponse("Invalid JSON structure")))
                 }
             } catch {
-                completion(.failure(error))
+                completion(.failure(OCRYoudaoError.jsonParsingError(error.localizedDescription)))
             }
         }.resume()
     }
@@ -201,15 +251,3 @@ extension CharacterSet {
         return allowed
     }()
 }
-
-/*
-
- AAA BBB CCC
-
- DDD EEE FFF
-
- CCC
- BBB
- HHH
-
- */

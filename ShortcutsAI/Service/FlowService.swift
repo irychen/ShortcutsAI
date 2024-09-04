@@ -1,6 +1,5 @@
 import Foundation
 import RealmSwift
-import SwiftUI
 
 class Flow: Object, ObjectKeyIdentifiable {
     @Persisted(primaryKey: true) var _id: ObjectId
@@ -24,7 +23,7 @@ class Flow: Object, ObjectKeyIdentifiable {
         prefer = dto.prefer
         createdAt = Date()
         updatedAt = Date()
-        order = dto.order // 初始化 order
+        order = dto.order // Initialization of order
     }
 
     func update(with dto: FlowDto) {
@@ -35,7 +34,7 @@ class Flow: Object, ObjectKeyIdentifiable {
         fixed = dto.fixed
         prefer = dto.prefer
         updatedAt = Date()
-        order = dto.order // 更新 order
+        order = dto.order
     }
 }
 
@@ -51,8 +50,12 @@ struct FlowDto: Codable {
     var temperature: Float
     var fixed: Bool
     var prefer: String
-    var order: Int // 新增 order 字段
+    var order: Int // New order field
 }
+
+import Foundation
+import RealmSwift
+import SwiftUI
 
 class FlowService {
     static let shared = FlowService()
@@ -74,7 +77,14 @@ class FlowService {
                     realm.add([
                         Flow(dto: FlowDto(
                             name: "Translate",
-                            prompt: "You are an expert in translation, please help me translate the following text.",
+                            prompt: """
+                            # You are an expert in translation, please help me translate the following text.
+                            1. keep the original meaning.
+                            2. The translation should be accurate and fluent.
+                            3. if input text is English, output text should be Chinese.
+                            4. if input text is Chinese, output text should be English.
+                            5. if input text is other language, output text should be Chinese.
+                            """,
                             model: "gpt-4o-mini",
                             temperature: 1.0,
                             fixed: true,
@@ -88,13 +98,8 @@ class FlowService {
                             1. The class name should be a noun.
                             2. The class name should be meaningful and concise.
                             3. The class name should be in CamelCase.
-                            4. The class name should not be too long.
-                            5. The class name should not be too short.
-                            6. The class name should not be a keyword in Java.
-                            7. The class name should not be a built-in class in Java.
-                            8. The class name should not be a library name in Java.
-                            9. The class name should not be a common name in Java.
-                            10. Only output the class name, no need to output the code.
+                            4. Only output the class name, no need to output extra information.
+                            5. if there are multiple recommended class names, output them splited by comma.
                             """,
                             model: "gpt-4o-mini",
                             temperature: 1.0,
@@ -117,6 +122,39 @@ class FlowService {
                             fixed: true,
                             prefer: FlowPrefer.clipboard.rawValue,
                             order: 3
+                        )),
+                        Flow(dto: FlowDto(
+                            name: "Code Review",
+                            prompt: """
+                            # You are an expert in code review, please help me review the following code.
+                            1. Point out the problems in the code.
+                            2. Provide suggestions for improvement.
+                            3. Explain the reasons for the suggestions.
+                            4. Provide examples or references to support the suggestions.
+                            5. Be constructive and polite in the review.
+                            """,
+                            model: "gpt-4o",
+                            temperature: 1.0,
+                            fixed: true,
+                            prefer: FlowPrefer.clipboard.rawValue,
+                            order: 4
+                        )),
+                        // Prompt Engineer
+                        Flow(dto: FlowDto(
+                            name: "Prompt Engineer",
+                            prompt: """
+                            # You are an expert in prompt engineering, please help me design a prompt for the following task.
+                            1. The prompt should be clear and specific.
+                            2. The prompt should provide enough context for the model to generate the desired output.
+                            3. The prompt should be concise and to the point.
+                            4. The prompt should be written in natural language.
+                            5. The prompt should be free of spelling and grammatical errors.
+                            """,
+                            model: "gpt-4o",
+                            temperature: 1.0,
+                            fixed: true,
+                            prefer: FlowPrefer.clipboard.rawValue,
+                            order: 5
                         )),
                     ])
                 }
@@ -154,10 +192,13 @@ class FlowService {
         do {
             try realm.write {
                 let oldOrder = flow.order
-                flow.update(with: dto)
-                if oldOrder != flow.order {
-                    self.adjustOrderForUpdatedFlow(flow, oldOrder: oldOrder)
+                let newOrder = dto.order
+
+                if oldOrder != newOrder {
+                    self.adjustOrderForUpdatedFlow(flow, oldOrder: oldOrder, newOrder: newOrder)
                 }
+
+                flow.update(with: dto)
             }
         } catch {
             throw error
@@ -189,6 +230,11 @@ class FlowService {
     func findFlowByName(_ name: String) -> Flow? {
         realm.objects(Flow.self).filter("name == %@", name).first
     }
+    
+    // check if flow name exists
+    func exists(name: String) -> Bool {
+        realm.objects(Flow.self).filter("name == %@", name).count > 0
+    }
 
     // Find by ID
     func findFlowById(_ id: ObjectId) -> Flow? {
@@ -204,20 +250,29 @@ class FlowService {
     }
 
     // 调整顺序 - 更新流程时
-    private func adjustOrderForUpdatedFlow(_ updatedFlow: Flow, oldOrder: Int) {
-        if oldOrder < updatedFlow.order {
+    private func adjustOrderForUpdatedFlow(_ updatedFlow: Flow, oldOrder: Int, newOrder: Int) {
+        let allFlows = realm.objects(Flow.self).sorted(byKeyPath: "order")
+
+        if oldOrder < newOrder {
             // 向下移动
-            let flowsToUpdate = realm.objects(Flow.self).filter("order > %@ AND order <= %@", oldOrder, updatedFlow.order)
-            for flow in flowsToUpdate {
-                flow.order -= 1
+            for flow in allFlows {
+                if flow.order > oldOrder, flow.order <= newOrder, flow._id != updatedFlow._id {
+                    flow.order -= 1
+                }
             }
-        } else if oldOrder > updatedFlow.order {
+        } else if oldOrder > newOrder {
             // 向上移动
-            let flowsToUpdate = realm.objects(Flow.self).filter("order >= %@ AND order < %@", updatedFlow.order, oldOrder)
-            for flow in flowsToUpdate {
-                flow.order += 1
+            for flow in allFlows {
+                if flow.order >= newOrder, flow.order < oldOrder, flow._id != updatedFlow._id {
+                    flow.order += 1
+                }
             }
         }
+
+        updatedFlow.order = newOrder
+
+        // 确保没有重复的 order
+        ensureUniqueOrders()
     }
 
     // 调整顺序 - 删除流程后
@@ -225,6 +280,19 @@ class FlowService {
         let flowsToUpdate = realm.objects(Flow.self).filter("order > %@", deletedOrder)
         for flow in flowsToUpdate {
             flow.order -= 1
+        }
+    }
+
+    // 确保所有流程的 order 是唯一的
+    private func ensureUniqueOrders() {
+        let allFlows = realm.objects(Flow.self).sorted(byKeyPath: "order")
+        var currentOrder = 1
+
+        for flow in allFlows {
+            if flow.order != currentOrder {
+                flow.order = currentOrder
+            }
+            currentOrder += 1
         }
     }
 

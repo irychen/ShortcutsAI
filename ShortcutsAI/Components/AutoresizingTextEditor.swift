@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 
-public struct AutoresizingCustomTextEditor: View {
+public struct AutoresizingTextEditor: View {
     @Binding public var text: String
     public let font: NSFont
     public let isEditable: Bool

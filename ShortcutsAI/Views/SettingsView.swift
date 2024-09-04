@@ -30,10 +30,12 @@ struct SettingsView: View {
         @AppStorage(\.autoSaveToClipboard) var autoSaveToClipboard: Bool
         @AppStorage(\.autoStartOnBoot) var autoStartOnBoot: Bool
         @AppStorage(\.autoOpenResultPanel) var autoOpenResultPanel: Bool
+        
 
         init() {}
     }
 
+    @ObservedResults(Flow.self) var flows
     @State private var showAlert = false
     @StateObject var settings = Settings()
 
@@ -108,10 +110,7 @@ struct SettingsView: View {
                             Section(header: Text("Other").bold().padding(.top, 10)) {
                                 Picker("Shortcut Flow", selection: $settings.shortcutsFlowName) {
                                     ForEach(
-                                        [
-                                            SelectOption(value: "Translate", label: "Translate"),
-                                            SelectOption(value: "OCR", label: "OCR"),
-                                        ],
+                                        flows.map { SelectOption(value: $0.name, label: $0.name) },
                                         id: \.value
                                     ) { option in
                                         Text(option.label).tag(option.value)
@@ -130,6 +129,12 @@ struct SettingsView: View {
 
                                 Toggle(isOn: $settings.autoStartOnBoot) {
                                     Text("Auto start on boot")
+                                }.onChange(of: settings.autoStartOnBoot) { value in
+                                  if value {
+                                    LoginItemsService.shared.addToLoginItems()
+                                  } else {
+                                    LoginItemsService.shared.removeFromLoginItems()
+                                  }
                                 }
                             }
 
@@ -171,10 +176,17 @@ struct SettingsView: View {
                                         secondaryButton: .cancel()
                                     )
                                 }
+                                
+                                
+                                
                             }.padding(.top, 10)
                         }
                     }.padding(.horizontal, 20).padding(.vertical, 14)
                 }
+            }
+        }.onAppear {
+            if  LoginItemsService.shared.isInLoginItems() {
+                settings.autoStartOnBoot = true
             }
         }
     }

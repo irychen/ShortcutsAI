@@ -2,16 +2,14 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateUserDefault("currentTabKey", defaultValue: "home")
-    private var currentTabKey: String
+
+    @AppStorage(\.currentAppTabKey) var currentAppTabKey
 
     let tabs = [
-        TabItem(label: "Home", icon: "house.fill", key: "home", view: AnyView(Text("Home Content"))),
-        TabItem(label: "Translator", icon: "globe.americas.fill", key: "translator", view: AnyView(Text("Translator Content"))),
-        TabItem(label: "Chat", icon: "message.fill", key: "chat", view: AnyView(Text("Chat Content"))),
+        TabItem(label: "Home", icon: "house.fill", key: "home", view: AnyView(HomeView())),
+        TabItem(label: "Translator", icon: "globe.americas.fill", key: "translator", view: AnyView(TranslatorView())),
         TabItem(label: "Flow", icon: "arrow.up.arrow.down.circle.fill", key: "flow", view: AnyView(FlowView())),
-        TabItem(label: "Prompt", icon: "captions.bubble.fill", key: "prompt", view: AnyView(Text("Prompt Content"))),
-        TabItem(label: "Statistics", icon: "chart.bar.xaxis", key: "statistics", view: AnyView(Text("Statistics Content"))),
+        TabItem(label: "History", icon: "clock.fill", key: "history", view: AnyView(HistoryView())),
         TabItem(label: "Settings", icon: "gearshape.fill", key: "settings", view: AnyView(SettingsView())),
     ]
 
@@ -21,14 +19,14 @@ struct ContentView: View {
                 CurrentView
             }.frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(.ultraThinMaterial.opacity(0.01))
-            CustomTabView(tabs: tabs, currentKey: $currentTabKey)
+            CustomTabView(tabs: tabs, currentKey: $currentAppTabKey)
         }
         .background(
-            LinearGradient(gradient: Gradient(colors: [Color.blue.opacity(0.1), Color.purple.opacity(0.1)]), startPoint: .topLeading, endPoint: .bottomTrailing)
+            LinearGradient(gradient: Gradient(colors: [Color.blue.opacity(0.04), Color.purple.opacity(0.04)]), startPoint: .topLeading, endPoint: .bottomTrailing)
         )
     }
 
     private var CurrentView: AnyView {
-        tabs.first { $0.key == currentTabKey }?.view ?? AnyView(EmptyView())
+        tabs.first { $0.key == currentAppTabKey }?.view ?? AnyView(EmptyView())
     }
 }

@@ -46,4 +46,22 @@ public struct UserDefaultPreferenceKeys {
     var autoOpenResultPanel = PreferenceKey<Bool>(defaultValue: true, key: "AutoOpenResultPanel")
 
     var appIsInitialized = PreferenceKey<Bool>(defaultValue: false, key: "AppIsInitizalized")
+
+    // ------------ section of Translator ------------
+    var translateFrom = PreferenceKey<String>(defaultValue: "auto", key: "TranslateFrom")
+    var translateTo = PreferenceKey<String>(defaultValue: "Chinese", key: "TranslateTo")
+    var translateInputText = PreferenceKey<String>(defaultValue: "", key: "TranslateInputText")
+    var translateOutputText = PreferenceKey<String>(defaultValue: "", key: "TranslateOutputText")
+    var translateModel = PreferenceKey<String>(defaultValue: "gpt-4o-mini", key: "TranslateModel")
+    var translateTemperature = PreferenceKey<Double>(defaultValue: 0.5, key: "TranslateTemperature")
+
+    // ------------ Other ------------
+    var inputText = PreferenceKey<String>(defaultValue: "", key: "InputText")
+    var outputText = PreferenceKey<String>(defaultValue: "", key: "OutputText")
+    var homeSelectedFlowName = PreferenceKey<String>(defaultValue: "Translate", key: "HomeSelectedFlowName")
+    var maxHistoryRecordCount = PreferenceKey<Int>(defaultValue: 100, key: "MaxHistoryRecordCount")
+    
+    var currentAppTabKey = PreferenceKey<String>(defaultValue: "home", key: "CurrentAppTabKey")
+    var globalRunLoading = PreferenceKey<Bool>(defaultValue: false, key: "GlobalRunLoading")
+    
 }
