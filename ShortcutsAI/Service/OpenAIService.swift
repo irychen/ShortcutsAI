@@ -64,8 +64,11 @@ class OpenAIService: NSObject {
             throw OpenAIServiceError.notFoundAPIKey
         }
         
-        let base_url = openAIBaseURL.isEmpty ? "https://api.openai.com" : openAIBaseURL
-        let whole_url = base_url + "/v1/chat/completions"
+        var base_url = openAIBaseURL.isEmpty ? "https://api.openai.com" : openAIBaseURL
+        if !base_url.hasSuffix("/") {
+            base_url += "/"
+        }
+        let whole_url = base_url + "v1/chat/completions"
         guard let url = URL(string: whole_url) else { return }
             
         var urlRequest = URLRequest(url: url)
@@ -92,8 +95,11 @@ class OpenAIService: NSObject {
             return
         }
         
-        let base_url = openAIBaseURL.isEmpty ? "https://api.openai.com" : openAIBaseURL
-        let whole_url = base_url + "/v1/chat/completions"
+        var base_url = openAIBaseURL.isEmpty ? "https://api.openai.com" : openAIBaseURL
+        if !base_url.hasSuffix("/") {
+            base_url += "/"
+        }
+        let whole_url = base_url + "v1/chat/completions"
         guard let url = URL(string: whole_url) else { return }
            
         var urlRequest = URLRequest(url: url)

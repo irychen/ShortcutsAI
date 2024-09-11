@@ -30,7 +30,6 @@ struct SettingsView: View {
         @AppStorage(\.autoSaveToClipboard) var autoSaveToClipboard: Bool
         @AppStorage(\.autoStartOnBoot) var autoStartOnBoot: Bool
         @AppStorage(\.autoOpenResultPanel) var autoOpenResultPanel: Bool
-        
 
         init() {}
     }
@@ -38,6 +37,43 @@ struct SettingsView: View {
     @ObservedResults(Flow.self) var flows
     @State private var showAlert = false
     @StateObject var settings = Settings()
+
+    @State private var loading = false
+    @State private var connectStatus = ""
+
+    func testConnection() {
+        let openAISvc = OpenAIService()
+        loading = true
+        openAISvc.send(request: OpenAICompletionRequest(
+            model: settings.defaultFlowModel,
+            messages: [OpenAIMessage(role: .user, content: "just respsonse me text 'hello' only")],
+            temperature: 0.1
+        )) { result in
+            switch result {
+            case .success(var response):
+                // lowercase response
+                response = response.lowercased()
+                loading = false
+                if response.contains("hello") {
+                    connectStatus = "Connection Success"
+                } else {
+                    connectStatus = "Connection Failed"
+                }
+                // after 5 seconds, reset status
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    connectStatus = ""
+                }
+                print(response)
+            case .failure(let error):
+                loading = false
+                connectStatus = "Connection Failed"
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    connectStatus = ""
+                }
+                print(error)
+            }
+        }
+    }
 
     var body: some View {
         VStack {
@@ -58,9 +94,15 @@ struct SettingsView: View {
                                 CustomTextField(label: "API Key", text: $settings.openAIKey, placeholder: "OpenAI API Key", password: true)
                                 HStack {
                                     CustomTextField(label: "Base URL", text: $settings.openAIBaseURL, placeholder: "Like https://api.openai.com")
-                                    Button(action: {}) {
-                                        Text("Test Connection").frame(width: 120)
-                                    }
+                                    Button(action: {
+                                        testConnection()
+                                    }) {
+                                        Text(connectStatus == "" ? (loading ? "Testing ... ":"Test Connection") : connectStatus).frame(width: 160)
+                                    }.buttonStyle(NormalButtonStyle(
+                                        isDanger: connectStatus == "Connection Failed", 
+                                        isWarning: loading,
+                                        isSuccess: connectStatus == "Connection Success"
+                                    ))
                                 }
 
                                 HStack {
@@ -130,11 +172,11 @@ struct SettingsView: View {
                                 Toggle(isOn: $settings.autoStartOnBoot) {
                                     Text("Auto start on boot")
                                 }.onChange(of: settings.autoStartOnBoot) { value in
-                                  if value {
-                                    LoginItemsService.shared.addToLoginItems()
-                                  } else {
-                                    LoginItemsService.shared.removeFromLoginItems()
-                                  }
+                                    if value {
+                                        LoginItemsService.shared.addToLoginItems()
+                                    } else {
+                                        LoginItemsService.shared.removeFromLoginItems()
+                                    }
                                 }
                             }
 
@@ -176,16 +218,14 @@ struct SettingsView: View {
                                         secondaryButton: .cancel()
                                     )
                                 }
-                                
-                                
-                                
+
                             }.padding(.top, 10)
                         }
                     }.padding(.horizontal, 20).padding(.vertical, 14)
                 }
             }
         }.onAppear {
-            if  LoginItemsService.shared.isInLoginItems() {
+            if LoginItemsService.shared.isInLoginItems() {
                 settings.autoStartOnBoot = true
             }
         }
