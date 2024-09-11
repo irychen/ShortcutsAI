@@ -10,8 +10,6 @@ import MarkdownUI
 import RealmSwift
 import SwiftUI
 
-
-
 struct HomeView: View {
     @AppStorage(\.inputText) private var inputText
     @AppStorage(\.outputText) private var outputText
@@ -56,7 +54,7 @@ struct HomeView: View {
                 let isDone = OpenAIService.isResDone(dataString: text)
                 if isDone {
                     self.loading = false
-                    
+
                     DispatchQueue.main.async {
                         try! HistoryService.shared.create(HistoryDto(name: self.homeSelectedFlowName, input: self.inputText, result: self.outputText))
                     }
@@ -174,11 +172,12 @@ struct HomeView: View {
                     }.buttonStyle(NormalButtonStyle())
                     // Clear Clipboard
                     Button(action: {
-                      ClipboardService.shared.clear()
+                        ClipboardService.shared.clear()
+                        try! ClipboardService.shared.save("")
                     }) {
                         Text("Clear Clipboard")
                     }.buttonStyle(NormalButtonStyle(isDanger: true))
-                
+
                     Button(action: {
                         stopListening()
                     }) {

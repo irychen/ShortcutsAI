@@ -183,6 +183,9 @@ class StatusBar {
         if let event = NSApp.currentEvent {
             if event.type == .rightMouseUp {
                 print("Right click")
+                
+                excuteShortcutFlow()
+                
             } else {
                 print("Left click")
                 statusItem.menu = menu
@@ -195,22 +198,39 @@ class StatusBar {
         }
     }
     
-    @objc func menuItemClicked(_ sender: NSMenuItem) {
+    func excuteShortcutFlow() {
+        var shortcutsFlowName: String {
+            UserDefaults.shared.value(for: \.shortcutsFlowName)
+        }
+        print("shortcutsFlowName \(shortcutsFlowName)")
+        excuteFlowByName(shortcutsFlowName)
+    }
+    
+    func excuteFlowByName(_ name: String) {
         let openAISvc = OpenAIService()
-        guard let flow = sender.representedObject as? Flow else { return }
-        homeSelectedFlowName = flow.name
-        
-        var inputText :String {
+        var inputText: String {
             UserDefaults.shared.value(for: \.inputText)
         }
-        
-        // Add your logic for handling the flow selection here
-        if flow.prefer == FlowPrefer.clipboard.rawValue {
-            if let text = ClipboardService.shared.retrieve(String.self) {
-                self.inputText = text
+        if let flow = FlowService.shared.findFlowByName(name) {
+            // Add your logic for handling the flow selection here
+            if flow.prefer == FlowPrefer.clipboard.rawValue {
+                if let text = ClipboardService.shared.retrieve(String.self) {
+                    self.inputText = text
+                }
+                print("inputText \(inputText)")
+                if inputText.isEmpty {
+                    if let image = ScreenshotService.take() {
+                        do {
+                            let text = try OCRService.shared.recognize(image)
+                            self.inputText = text
+                        } catch {
+                            print("OCR Error: \(error)")
+                        }
+                    }
+                }
             }
-            print("inputText \(inputText)")
-            if inputText.isEmpty {
+            
+            if flow.prefer == FlowPrefer.screenshot.rawValue {
                 if let image = ScreenshotService.take() {
                     do {
                         let text = try OCRService.shared.recognize(image)
@@ -220,51 +240,49 @@ class StatusBar {
                     }
                 }
             }
-        }
-        
-        if flow.prefer == FlowPrefer.screenshot.rawValue {
-            if let image = ScreenshotService.take() {
-                do {
-                    let text = try OCRService.shared.recognize(image)
-                    self.inputText = text
-                } catch {
-                    print("OCR Error: \(error)")
-                }
-            }
-        }
-        
-        if inputText.isEmpty {
-            outputText = "Input text is empty. You need to provide some input text from the clipboard or take a screenshot."
-            return
-        }
-    
-        outputText = ""
-        
-        // auto open result Popover
-        if autoOpenResultPanel {
-            showPopover?()
-        }
- 
-        globalRunLoading = true
-        setLoadingIcon()
-        cancel = try! openAISvc.excuteFlowStream(name: flow.name, input: inputText, callback: { text in
-            let section = OpenAIService.handleStreamedData(dataString: text)
-            self.outputText += section
-            let isDone = OpenAIService.isResDone(dataString: text)
-            if isDone {
-                self.globalRunLoading = false
-                self.setNormalIcon()
-                // auto save to clipboard
-                if self.autoSaveToClipboard {
-                    try! ClipboardService.shared.save(self.outputText)
-                }
-                // async save history
-                DispatchQueue.main.async {
-                    try! HistoryService.shared.create(HistoryDto(name: flow.name, input: self.inputText, result: self.outputText))
-                }
+            
+            if inputText.isEmpty {
+                outputText = "Input text is empty. You need to provide some input text from the clipboard or take a screenshot."
                 return
             }
-        })
+        
+            outputText = ""
+            
+            // auto open result Popover
+            if autoOpenResultPanel {
+                showPopover?()
+            }
+     
+            globalRunLoading = true
+            setLoadingIcon()
+            cancel = try! openAISvc.excuteFlowStream(name: flow.name, input: inputText, callback: { text in
+                let section = OpenAIService.handleStreamedData(dataString: text)
+                self.outputText += section
+                let isDone = OpenAIService.isResDone(dataString: text)
+                if isDone {
+                    self.globalRunLoading = false
+                    self.setNormalIcon()
+                    // auto save to clipboard
+                    if self.autoSaveToClipboard {
+                        try! ClipboardService.shared.save(self.outputText)
+                    }
+                    // async save history
+                    DispatchQueue.main.async {
+                        try! HistoryService.shared.create(HistoryDto(name: flow.name, input: self.inputText, result: self.outputText))
+                    }
+                    return
+                }
+            })
+        }else {
+            outputText = "Flow not found"
+        }
+    }
+    
+    @objc func menuItemClicked(_ sender: NSMenuItem) {
+        guard let flow = sender.representedObject as? Flow else { return }
+        let name = flow.name
+        homeSelectedFlowName = name
+        excuteFlowByName(name)
     }
     
     @objc func quit() {
