@@ -28,9 +28,13 @@ Macos 13.0+
 ## Snapshots
 
 <div style="display: flex; gap: 50px"> 
-    <img style="width:300px" src="./images/snapshot_1.jpg" />
-    <img style="width:300px" src="./images/snapshot_2.jpg" >
-    <img style="width:300px" src="./images/status_bar.jpg" >
+    <img style="width:300px" src="./images/index.jpg" />
+    <img style="width:300px" src="./images/translator.jpg" >
+    <img style="width:300px" src="./images/flow.jpg" >
+    <img style="width:300px" src="./images/history.jpg" >
+    <img style="width:300px" src="./images/settings.jpg" >
+    <img style="width:300px" src="./images/statusbar_menu.jpg" />
+    <img style="width:300px" src="./images/popover.jpg" >
 </div>
 
 ## Sponsor
