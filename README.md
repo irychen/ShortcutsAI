@@ -25,6 +25,11 @@ These capabilities enable you to quickly and efficiently access and execute cust
 
 Macos 13.0+
 
+
+## Demo gif
+
+![demo](./images/demo.gif)
+
 ## Snapshots
 
 <div style="display: flex; gap: 50px"> 
