@@ -17,20 +17,14 @@ public struct PreferenceKey<T>: UserDefaultPreferenceKey {
     }
 }
 
+
 public struct UserDefaultPreferenceKeys {
     public init() {}
     // ------------ section of OpenAI Service ------------
     var openAIKey = PreferenceKey<String>(defaultValue: "", key: "OpenAIKey")
     var openAIBaseURL = PreferenceKey<String>(defaultValue: "https://api.openai.com", key: "OpenAIBaseURL")
     var defaultFlowModel = PreferenceKey<String>(defaultValue: "gpt-4o-mini", key: "DefaultFlowModel")
-    var openAImodels = PreferenceKey<[String]>(defaultValue: [
-        "gpt-4o-mini-2024-07-18",
-        "gpt-4o-mini",
-        "gpt-4o-2024-08-06",
-        "gpt-4o",
-        "gpt-3.5-turbo",
-        "claude-3-5-sonnet-20240620",
-    ], key: "OpenAIModels")
+
 
     // ------------ section of OCR Service ------------
     var selectedOCRService = PreferenceKey<String>(defaultValue: "ocrspace", key: "SelectedOCRService")

@@ -11,12 +11,12 @@ import RealmSwift
 import SwiftUI
 
 struct SettingsView: View {
+    private var openAIModels = OpenAIService.openAImodels
     class Settings: ObservableObject {
         // ------------ section of OpenAI Service ------------
         @AppStorage(\.openAIKey) var openAIKey: String
         @AppStorage(\.openAIBaseURL) var openAIBaseURL: String
         @AppStorage(\.defaultFlowModel) var defaultFlowModel: String
-        @AppStorage(\.openAImodels) var openAIModels: [String]
 
         // ------------ section of OCR Service ------------
         @AppStorage(\.selectedOCRService) var selectedOCRService: String
@@ -43,34 +43,32 @@ struct SettingsView: View {
 
     func testConnection() {
         let openAISvc = OpenAIService()
-        loading = true
-        openAISvc.send(request: OpenAICompletionRequest(
-            model: settings.defaultFlowModel,
-            messages: [OpenAIMessage(role: .user, content: "just respsonse me text 'hello' only")],
-            temperature: 0.1
-        )) { result in
-            switch result {
-            case .success(var response):
-                // lowercase response
-                response = response.lowercased()
+
+        do {
+            loading = true
+            try openAISvc.send(
+                request: OpenAICompletionRequest(
+                    model: settings.defaultFlowModel,
+                    messages: [OpenAIMessage(role: .user, content: "just respsonse me text 'hello' only")],
+                    temperature: 0.1
+                ), stream: false
+            )
+            openAISvc.onDataReceived = { result in
                 loading = false
-                if response.contains("hello") {
+                if result.text.contains("hello") {
                     connectStatus = "Connection Success"
                 } else {
                     connectStatus = "Connection Failed"
                 }
-                // after 5 seconds, reset status
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                     connectStatus = ""
                 }
-                print(response)
-            case .failure(let error):
-                loading = false
-                connectStatus = "Connection Failed"
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                    connectStatus = ""
-                }
-                print(error)
+            }
+
+        } catch {
+            connectStatus = "Connection Failed"
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                connectStatus = ""
             }
         }
     }
@@ -85,30 +83,42 @@ struct SettingsView: View {
                     .font(.system(size: 18, weight: .bold))
             }
             .draggable()
-            Rectangle().fill(Color.gray.opacity(0.1)).frame(height: 2).padding(.horizontal, 0).padding(.vertical, 0)
+            Rectangle().fill(Color.gray.opacity(0.1)).frame(height: 2).padding(.horizontal, 0).padding(
+                .vertical, 0
+            )
             VStack(alignment: .leading, spacing: 0) {
                 ScrollView(.vertical) {
                     VStack {
                         Form {
                             Section(header: Text("OpenAI Service").bold()) {
-                                CustomTextField(label: "API Key", text: $settings.openAIKey, placeholder: "OpenAI API Key", password: true)
+                                CustomTextField(
+                                    label: "API Key", text: $settings.openAIKey, placeholder: "OpenAI API Key",
+                                    password: true
+                                )
                                 HStack {
-                                    CustomTextField(label: "Base URL", text: $settings.openAIBaseURL, placeholder: "Like https://api.openai.com")
+                                    CustomTextField(
+                                        label: "Base URL", text: $settings.openAIBaseURL,
+                                        placeholder: "Like https://api.openai.com"
+                                    )
                                     Button(action: {
                                         testConnection()
                                     }) {
-                                        Text(connectStatus == "" ? (loading ? "Testing ... ":"Test Connection") : connectStatus).frame(width: 160)
-                                    }.buttonStyle(NormalButtonStyle(
-                                        isDanger: connectStatus == "Connection Failed", 
-                                        isWarning: loading,
-                                        isSuccess: connectStatus == "Connection Success"
-                                    ))
+                                        Text(
+                                            connectStatus == ""
+                                                ? (loading ? "Testing ... " : "Test Connection") : connectStatus
+                                        ).frame(width: 160)
+                                    }.buttonStyle(
+                                        NormalButtonStyle(
+                                            isDanger: connectStatus == "Connection Failed",
+                                            isWarning: loading,
+                                            isSuccess: connectStatus == "Connection Success"
+                                        ))
                                 }
 
                                 HStack {
                                     Picker("Default Flow Model", selection: $settings.defaultFlowModel) {
                                         ForEach(
-                                            settings.openAIModels.map { SelectOption(value: $0, label: $0) },
+                                            openAIModels.map { SelectOption(value: $0, label: $0) },
                                             id: \.value
                                         ) { option in
                                             Text(option.label).tag(option.value)
@@ -127,9 +137,18 @@ struct SettingsView: View {
 
                                 Group {
                                     if settings.selectedOCRService == "youdao" {
-                                        CustomTextField(label: "App Key", text: $settings.ocrYoudaoAppKey, placeholder: "App Key", password: true)
-                                        CustomTextField(label: "App Secret", text: $settings.ocrYoudaoAppSecret, placeholder: "App Secret", password: true)
-                                        Link("Click here to get youdao OCR app Key and Secret", destination: URL(string: "https://ai.youdao.com")!).font(.caption)
+                                        CustomTextField(
+                                            label: "App Key", text: $settings.ocrYoudaoAppKey, placeholder: "App Key",
+                                            password: true
+                                        )
+                                        CustomTextField(
+                                            label: "App Secret", text: $settings.ocrYoudaoAppSecret,
+                                            placeholder: "App Secret", password: true
+                                        )
+                                        Link(
+                                            "Click here to get youdao OCR app Key and Secret",
+                                            destination: URL(string: "https://ai.youdao.com")!
+                                        ).font(.caption)
                                     } else if settings.selectedOCRService == "ocrspace" {
                                         Picker("Language", selection: $settings.ocrSpacePreferredLanguage) {
                                             ForEach(
@@ -140,8 +159,14 @@ struct SettingsView: View {
                                             }
                                         }
                                         .pickerStyle(MenuPickerStyle())
-                                        CustomTextField(label: "API Key", text: $settings.ocrSpaceAPIKey, placeholder: "API Key", password: true)
-                                        Link("Click here to get ocr.space API Key", destination: URL(string: "https://ocr.space/ocrapi/freekey")!).font(.caption)
+                                        CustomTextField(
+                                            label: "API Key", text: $settings.ocrSpaceAPIKey, placeholder: "API Key",
+                                            password: true
+                                        )
+                                        Link(
+                                            "Click here to get ocr.space API Key",
+                                            destination: URL(string: "https://ocr.space/ocrapi/freekey")!
+                                        ).font(.caption)
 
                                     } else {
                                         Text("No Service Selected")
@@ -204,14 +229,15 @@ struct SettingsView: View {
                                         RoundedRectangle(cornerRadius: 4)
                                             .stroke(Color.red.opacity(0.2), lineWidth: 1)
                                     )
-//                                      .shadow(color: Color.red.opacity(0.3), radius: 3, x: 0, y: 2)
+                                    //.shadow(color: Color.red.opacity(0.3), radius: 3, x: 0, y: 2)
                                 }
                                 .buttonStyle(PlainButtonStyle())
                                 .contentShape(Rectangle())
                                 .alert(isPresented: $showAlert) {
                                     Alert(
                                         title: Text("Warning"),
-                                        message: Text("This action will delete all data. Are you sure you want to proceed?"),
+                                        message: Text(
+                                            "This action will delete all data. Are you sure you want to proceed?"),
                                         primaryButton: .destructive(Text("Clean")) {
                                             cleanData()
                                         },

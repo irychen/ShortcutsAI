@@ -43,24 +43,27 @@ struct HomeView: View {
         }
     }
 
-    func excuteStreamFlow() {
+    func executeStreamFlow() {
         outputText = ""
         let openAISvc = OpenAIService()
         loading = true
         do {
-            cancel = try openAISvc.excuteFlowStream(name: homeSelectedFlowName, input: inputText, callback: { text in
-                let section = OpenAIService.handleStreamedData(dataString: text)
-                self.outputText += section
-                let isDone = OpenAIService.isResDone(dataString: text)
-                if isDone {
-                    self.loading = false
-
-                    DispatchQueue.main.async {
-                        try! HistoryService.shared.create(HistoryDto(name: self.homeSelectedFlowName, input: self.inputText, result: self.outputText))
+            cancel = try openAISvc.executeFlow(
+                name: homeSelectedFlowName, input: inputText,
+                callback: { data in
+                    self.outputText += data.text
+                    if data.isDone {
+                        self.loading = false
+                        DispatchQueue.main.async {
+                            try! HistoryService.shared.create(
+                                HistoryDto(
+                                    name: self.homeSelectedFlowName, input: self.inputText, result: self.outputText
+                                ))
+                        }
+                        return
                     }
-                    return
                 }
-            })
+            )
         } catch let error as OpenAIServiceError {
             alertTitle = "Flow Error"
             alertMessage = "Flow Error: \(error.description)"
@@ -135,11 +138,13 @@ struct HomeView: View {
                 }
             }.padding(.horizontal, 20).pickerStyle(MenuPickerStyle()).padding(.bottom, 10)
             ScrollView(.vertical) {
-                ThemedMarkdownText(outputText,
-                                   fontSize: 14,
-                                   codeFont: .monospaced(.body)(),
-                                   wrapCode: true)
-                    .padding(12).frame(maxWidth: .infinity, alignment: .topLeading)
+                ThemedMarkdownText(
+                    outputText,
+                    fontSize: 14,
+                    codeFont: .monospaced(.body)(),
+                    wrapCode: true
+                )
+                .padding(12).frame(maxWidth: .infinity, alignment: .topLeading)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(
@@ -151,7 +156,7 @@ struct HomeView: View {
             HStack {
                 Space(direction: .horizontal) {
                     Button(action: {
-                        excuteStreamFlow()
+                        executeStreamFlow()
                     }) {
                         Text(loading ? "Loading..." : "Run Flow")
                     }.buttonStyle(NormalButtonStyle(isPrimary: true)).disabled(loading)
@@ -187,7 +192,9 @@ struct HomeView: View {
             }.padding(.top, 10)
             Spacer()
         }.alert(isPresented: $showAlert) {
-            Alert(title: Text(alertTitle), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+            Alert(
+                title: Text(alertTitle), message: Text(alertMessage), dismissButton: .default(Text("OK"))
+            )
         }
     }
 }

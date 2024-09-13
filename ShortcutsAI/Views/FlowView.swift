@@ -130,6 +130,7 @@ struct FlowItemView: View {
 
 struct ModalView: View {
     private var flowSvc = FlowService.shared
+    private var openAIModels = OpenAIService.openAImodels
 
     @Binding var showModal: Bool
     @Binding var modalType: String
@@ -149,7 +150,7 @@ struct ModalView: View {
 
     @State private var previousName = ""
 
-    @AppStorage(\.openAImodels) var openAIModels: [String]
+
     @AppStorage(\.defaultFlowModel) var defaultFlowModel: String
     init(showModal: Binding<Bool>, modalType: Binding<String>, id: Binding<ObjectId?>) {
         _showModal = showModal

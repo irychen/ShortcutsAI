@@ -1,6 +1,8 @@
 import Foundation
 import SwiftUI
 
+
+
 class AppDelegate: NSObject, NSApplicationDelegate {
     var window: NSWindow!
     var statusBar: StatusBar?

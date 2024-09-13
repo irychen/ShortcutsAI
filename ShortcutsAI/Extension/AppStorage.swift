@@ -25,7 +25,6 @@ public extension UserDefaults {
         shared.setupDefaultValue(for: \.openAIKey)
         shared.setupDefaultValue(for: \.openAIBaseURL)
         shared.setupDefaultValue(for: \.defaultFlowModel)
-        shared.setupDefaultValue(for: \.openAImodels)
         shared.setupDefaultValue(for: \.ocrSpacePreferredLanguage)
         shared.setupDefaultValue(for: \.appIsInitialized)
         

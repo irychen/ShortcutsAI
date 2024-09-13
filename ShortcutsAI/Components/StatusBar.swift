@@ -20,23 +20,23 @@ class StatusBar {
     private var loadingIcon = "hourglass.bottomhalf.filled"
     private var normalIcon = "wand.and.rays"
     private var menu: NSMenu
-    
+
     var statusBar: NSStatusBar
     var statusItem: NSStatusItem
-    
+
     @AppStorage(\.outputText) private var outputText
     @AppStorage(\.inputText) private var inputText
     @AppStorage(\.autoOpenResultPanel) private var autoOpenResultPanel
     @AppStorage(\.autoSaveToClipboard) private var autoSaveToClipboard
 
     private let realm: Realm
-    
+
     @AppStorage(\.currentAppTabKey) var currentAppTabKey
-    
+
     @State private var cancel: (() -> Void)?
     @AppStorage(\.globalRunLoading) private var globalRunLoading
     @AppStorage(\.homeSelectedFlowName) private var homeSelectedFlowName
-    
+
     init(showPopover: (() -> Void)? = nil, hidePopover: (() -> Void)? = nil) {
         self.showPopover = showPopover
         self.hidePopover = hidePopover
@@ -54,7 +54,8 @@ class StatusBar {
             button.sendAction(on: [.leftMouseUp, .rightMouseUp])
             button.action = #selector(handleClick)
         }
-        let flows = realm.objects(Flow.self).sorted(byKeyPath: "order", ascending: true).filter("fixed = true")
+        let flows = realm.objects(Flow.self).sorted(byKeyPath: "order", ascending: true).filter(
+            "fixed = true")
         notificationToken = flows.observe { [weak self] (changes: RealmCollectionChange) in
             switch changes {
             case .initial(let flows), .update(let flows, _, _, _):
@@ -72,62 +73,67 @@ class StatusBar {
             }
         }
     }
-    
+
     func setLoadingIcon() {
         if let button = statusItem.button {
             button.image = NSImage(systemSymbolName: loadingIcon, accessibilityDescription: nil)
         }
     }
-    
+
     func registerMenu(flows: Results<Flow>) {
         menu.removeAllItems()
         // group title Flows
-        
+
         // -------------------- Flows --------------------
-        
+
         for flow in flows {
-            let menuItem = NSMenuItem(title: flow.name, action: #selector(menuItemClicked(_:)), keyEquivalent: "")
+            let menuItem = NSMenuItem(
+                title: flow.name, action: #selector(menuItemClicked(_:)), keyEquivalent: "")
             menuItem.representedObject = flow
             menuItem.target = self
             menu.addItem(menuItem)
         }
-        
+
         // -------------------- Functions ----------------
-        
+
         menu.addItem(NSMenuItem.separator())
         let ocrTextItem = NSMenuItem(title: "OCR Text", action: #selector(ocrText), keyEquivalent: "")
         ocrTextItem.target = self
         menu.addItem(ocrTextItem)
         // Take Screenshot
-        let ocrScreenshotItem = NSMenuItem(title: "Take Screenshot", action: #selector(takeScreenshot), keyEquivalent: "")
+        let ocrScreenshotItem = NSMenuItem(
+            title: "Take Screenshot", action: #selector(takeScreenshot), keyEquivalent: "")
         ocrScreenshotItem.target = self
         menu.addItem(ocrScreenshotItem)
-        
+
         // -------------------- Other Menu Items --------------------
-        
+
         menu.addItem(NSMenuItem.separator())
         // open main app
-        let openMainAppItem = NSMenuItem(title: "Open ShortcutsAI", action: #selector(openHome), keyEquivalent: "")
+        let openMainAppItem = NSMenuItem(
+            title: "Open ShortcutsAI", action: #selector(openHome), keyEquivalent: "")
         openMainAppItem.target = self
         menu.addItem(openMainAppItem)
         // open translator
-        let openTranslateItem = NSMenuItem(title: "Translator", action: #selector(openTranslate), keyEquivalent: "")
+        let openTranslateItem = NSMenuItem(
+            title: "Translator", action: #selector(openTranslate), keyEquivalent: "")
         openTranslateItem.target = self
         menu.addItem(openTranslateItem)
-        
+
         // open settings
-        let openSettingsItem = NSMenuItem(title: "Settings", action: #selector(openSettings), keyEquivalent: "")
+        let openSettingsItem = NSMenuItem(
+            title: "Settings", action: #selector(openSettings), keyEquivalent: "")
         openSettingsItem.target = self
         menu.addItem(openSettingsItem)
-        
+
         // -------------------- Quit --------------------
-        
+
         menu.addItem(NSMenuItem.separator())
         let quitItem = NSMenuItem(title: "Quit", action: #selector(quit), keyEquivalent: "q")
         quitItem.target = self
         menu.addItem(quitItem)
     }
-    
+
     @objc func ocrText() {
         let ocrSvc = OCRService.shared
         if let image = ScreenshotService.take() {
@@ -147,28 +153,28 @@ class StatusBar {
             }
         }
     }
-    
+
     @objc func takeScreenshot() {
         if let image = ScreenshotService.take() {
             try! ClipboardService.shared.save(image)
         }
     }
-    
+
     @objc func openHome() {
         currentAppTabKey = "home"
         openMainApp()
     }
-    
+
     @objc func openTranslate() {
         currentAppTabKey = "translator"
         openMainApp()
     }
-    
+
     @objc func openSettings() {
         currentAppTabKey = "settings"
         openMainApp()
     }
-    
+
     @objc func openMainApp() {
         let task = Process()
         if let appPath = locateHostBundleURL(url: Bundle.main.bundleURL)?.absoluteString {
@@ -178,14 +184,14 @@ class StatusBar {
             task.waitUntilExit()
         }
     }
-    
+
     @objc func handleClick() {
         if let event = NSApp.currentEvent {
             if event.type == .rightMouseUp {
                 print("Right click")
-                
+
                 excuteShortcutFlow()
-                
+
             } else {
                 print("Left click")
                 statusItem.menu = menu
@@ -197,16 +203,16 @@ class StatusBar {
             }
         }
     }
-    
+
     func excuteShortcutFlow() {
         var shortcutsFlowName: String {
             UserDefaults.shared.value(for: \.shortcutsFlowName)
         }
         print("shortcutsFlowName \(shortcutsFlowName)")
-        excuteFlowByName(shortcutsFlowName)
+        executeFlowByName(shortcutsFlowName)
     }
-    
-    func excuteFlowByName(_ name: String) {
+
+    func executeFlowByName(_ name: String) {
         let openAISvc = OpenAIService()
         var inputText: String {
             UserDefaults.shared.value(for: \.inputText)
@@ -229,7 +235,7 @@ class StatusBar {
                     }
                 }
             }
-            
+
             if flow.prefer == FlowPrefer.screenshot.rawValue {
                 if let image = ScreenshotService.take() {
                     do {
@@ -240,55 +246,57 @@ class StatusBar {
                     }
                 }
             }
-            
+
             if inputText.isEmpty {
-                outputText = "Input text is empty. You need to provide some input text from the clipboard or take a screenshot."
+                outputText =
+                    "Input text is empty. You need to provide some input text from the clipboard or take a screenshot."
                 return
             }
-        
+
             outputText = ""
-            
+
             // auto open result Popover
             if autoOpenResultPanel {
                 showPopover?()
             }
-     
+
             globalRunLoading = true
             setLoadingIcon()
-            cancel = try! openAISvc.excuteFlowStream(name: flow.name, input: inputText, callback: { text in
-                let section = OpenAIService.handleStreamedData(dataString: text)
-                self.outputText += section
-                let isDone = OpenAIService.isResDone(dataString: text)
-                if isDone {
-                    self.globalRunLoading = false
-                    self.setNormalIcon()
-                    // auto save to clipboard
-                    if self.autoSaveToClipboard {
-                        try! ClipboardService.shared.save(self.outputText)
+            cancel = try! openAISvc.executeFlow(
+                name: flow.name, input: inputText,
+                callback: { data in
+                    self.outputText += data.text
+                    if data.isDone {
+                        self.globalRunLoading = false
+                        self.setNormalIcon()
+                        // auto save to clipboard
+                        if self.autoSaveToClipboard {
+                            try! ClipboardService.shared.save(self.outputText)
+                        }
+                        // async save history
+                        DispatchQueue.main.async {
+                            try! HistoryService.shared.create(
+                                HistoryDto(name: flow.name, input: self.inputText, result: self.outputText))
+                        }
+                        return
                     }
-                    // async save history
-                    DispatchQueue.main.async {
-                        try! HistoryService.shared.create(HistoryDto(name: flow.name, input: self.inputText, result: self.outputText))
-                    }
-                    return
-                }
-            })
-        }else {
+                })
+        } else {
             outputText = "Flow not found"
         }
     }
-    
+
     @objc func menuItemClicked(_ sender: NSMenuItem) {
         guard let flow = sender.representedObject as? Flow else { return }
         let name = flow.name
         homeSelectedFlowName = name
-        excuteFlowByName(name)
+        executeFlowByName(name)
     }
-    
+
     @objc func quit() {
         NSApplication.shared.terminate(self)
     }
-    
+
     deinit {
         notificationToken?.invalidate()
     }
