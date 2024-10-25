@@ -63,8 +63,11 @@ class OpenAIService: NSObject {
         "gpt-4o",
         "gpt-3.5-turbo",
         "claude-3-5-sonnet-20240620",
+        "claude-3-5-sonnet-20241022",
         "o1-preview",
-        "o1-mini"
+        "o1-preview-2024-09-12",
+        "o1-mini",
+        "o1-mini-2024-09-12"
     ]
 
     var openAIKey: String {
@@ -82,7 +85,7 @@ class OpenAIService: NSObject {
     }
 
     func send(request: OpenAICompletionRequest, stream: Bool = true) throws {
-        var specialModel = OpenAIService.isSpecialModel(request.model)
+        let specialModel = OpenAIService.isSpecialModel(request.model)
 
         if openAIKey.isEmpty {
             throw OpenAIServiceError.notFoundAPIKey
@@ -124,7 +127,7 @@ class OpenAIService: NSObject {
             task = urlSession.dataTask(with: urlRequest)
 
         } else {
-            urlRequest.timeoutInterval = 120.0
+            urlRequest.timeoutInterval = 60.0 * 5.0 // 5 minutes
             urlRequest.httpBody = body
             task = urlSession.dataTask(with: urlRequest) { data, _, error in
                 if let error = error {
