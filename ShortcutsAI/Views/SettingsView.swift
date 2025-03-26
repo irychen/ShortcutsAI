@@ -91,6 +91,10 @@ struct SettingsView: View {
                     VStack {
                         Form {
                             Section(header: Text("OpenAI Service").bold()) {
+                                Link(
+                                    "Click here to get AI apiKey",
+                                    destination: URL(string: "https://aihubmix.com")!
+                                ).font(.caption)
                                 CustomTextField(
                                     label: "API Key", text: $settings.openAIKey, placeholder: "OpenAI API Key",
                                     password: true
@@ -98,7 +102,7 @@ struct SettingsView: View {
                                 HStack {
                                     CustomTextField(
                                         label: "Base URL", text: $settings.openAIBaseURL,
-                                        placeholder: "Like https://api.openai.com"
+                                        placeholder: "Like https://api.openai.com or https://aihubmix.com"
                                     )
                                     Button(action: {
                                         testConnection()
@@ -146,7 +150,7 @@ struct SettingsView: View {
                                             placeholder: "App Secret", password: true
                                         )
                                         Link(
-                                            "Click here to get youdao OCR app Key and Secret",
+                                            "Click here to get Youdao OCR app Key and Secret (recommended for China users",
                                             destination: URL(string: "https://ai.youdao.com")!
                                         ).font(.caption)
                                     } else if settings.selectedOCRService == "ocrspace" {

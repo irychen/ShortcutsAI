@@ -64,6 +64,8 @@ class OpenAIService: NSObject {
         "gpt-3.5-turbo",
         "claude-3-5-sonnet-20240620",
         "claude-3-5-sonnet-20241022",
+        "claude-3-7-sonnet-latest",
+        "DeepSeek-V3",
         "o1-preview",
         "o1-preview-2024-09-12",
         "o1-mini",

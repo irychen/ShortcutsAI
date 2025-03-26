@@ -22,7 +22,7 @@ public struct UserDefaultPreferenceKeys {
     public init() {}
     // ------------ section of OpenAI Service ------------
     var openAIKey = PreferenceKey<String>(defaultValue: "", key: "OpenAIKey")
-    var openAIBaseURL = PreferenceKey<String>(defaultValue: "https://api.openai.com", key: "OpenAIBaseURL")
+    var openAIBaseURL = PreferenceKey<String>(defaultValue: "https://aihubmix.com", key: "OpenAIBaseURL")
     var defaultFlowModel = PreferenceKey<String>(defaultValue: "gpt-4o-mini", key: "DefaultFlowModel")
 
 
