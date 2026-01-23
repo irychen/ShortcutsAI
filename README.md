@@ -42,11 +42,4 @@ Macos 13.0+
     <img style="width:300px" src="./images/popover.jpg" >
 </div>
 
-## Sponsor
 
-If you find this project helpful, please consider supporting it with a donation. Your generosity is greatly appreciated! 🙏
-
-<div style="display: flex; gap: 50px"> 
-    <img style="width:300px" src="./images/wxpay.JPG" />
-    <img style="width:300px" src="./images/alipay.JPG" >
-</div>
